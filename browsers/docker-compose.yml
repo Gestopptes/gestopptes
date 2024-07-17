@@ -1,0 +1,35 @@
+services:
+  selenium-firefox:
+    image: selenium/standalone-chrome:4.22.0-20240621
+    container_name: selenium-firefox
+    ports:
+      - "4444:4444"
+    restart: always
+    shm_size: 2g
+
+  mongo-cache:
+    image: mongo
+    restart: always
+    container_name: mongo-cache
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-cache:/data/db
+    ports:
+      - "27017:27017"
+
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo-cache:27017/
+      ME_CONFIG_BASICAUTH: false
+
+volumes:
+  mongo-cache:
