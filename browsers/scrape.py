@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse, urlunparse
 import time
-
+import html2markdown
 
 import pymongo
 
@@ -45,13 +45,21 @@ def db_get_html(url):
 def db_save_html_and_pic(url, html, png):
     MONGO_COL_BLOG_POST.insert_one({"url": url, "html": html, "png": png})
 
+def db_get_markdown(url):
+    x = MONGO_COL_BLOG_POST.find_one({"url": url, "markdown": {"$exists":True}})
+    if x:
+        return x.get('markdown')
+
+def db_set_markdown(url, markdown):
+    MONGO_COL_BLOG_POST.update_one({"url": url}, {"$set": {"markdown":markdown}})
+
 
 def db_get_screenshot(url):
     x = MONGO_COL_BLOG_POST.find_one({"url": url})
     if x:
         return x['png']
 
-def db_get_all_screenshot():
+def db_get_all_url():
     return MONGO_COL_BLOG_POST.find()
 
 def render_page_to_html(driver, url):
@@ -113,19 +121,20 @@ def get_children_urls(driver, base_url, filter_func=None, class_=None, max_depth
 def example_filter(url):
     return "langchain.com/v0.2" in url
 
-def example_alex_scrape_ceva(driver):
+def scrape_blog_post(driver):
     # Example usage
     base_url = 'https://github.com/langchain-ai/langchain/tree/langchain%3D%3D0.2.6/templates/csv-agent'
     children_urls = get_children_urls(driver, base_url, filter_func=None, max_depth=3, class_='Link--primary')
     for url in children_urls:
         if url.endswith('.py') or url.endswith('.md'):
-            print(url)
+            yield url
 
 
+        
 if __name__ == "__main__":
     
     driver = make_driver()
     try:
-        example_alex_scrape_ceva(driver)
+        scrape_blog_post(driver)
     finally:
         driver.quit()
