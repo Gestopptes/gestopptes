@@ -15,9 +15,8 @@ def main():
                         hd.h1("Link")
                         hd.link(data['url'], href= data['url'])
 
-
-                        hd.h1("HTMML")
-                        hd.code(data.get("html",'html') ,language="markdown")
+                        # hd.h1("HTMML")
+                        # hd.code(data.get("html",'html') ,language="markdown")
 
                         hd.h1("Markdown")
                         hd.code(data.get("markdown",'') ,language="markdown")

@@ -8,8 +8,9 @@ selenium = "*"
 beautifulsoup4 = "*"
 pymongo = "*"
 hyperdiv = "*"
-html2markdown = "*"
 temporalio = "*"
+markdownify = "*"
+langchain = "*"
 
 [dev-packages]
 
