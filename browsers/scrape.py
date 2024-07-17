@@ -7,8 +7,25 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse, urlunparse
 import time
 
+
+import pymongo
+
+MONGO_CLIENT =     pymongo.MongoClient("localhost", 27017,username="root", password="example")
+MONGO_DB = MONGO_CLIENT['GESTTOPTEZ']
+MONGO_COL_BLOG_POST = MONGO_DB["blog_post"]
 print("hello sirs")
-DBNAME = 'cache-html-pages'
+
+
+
+def init_mongo(client):
+    dblist = client.list_database_names()
+    MONGO_COL_BLOG_POST.create_index("url", unique=True)
+    print("mongo dblist: ", str(dblist))
+
+init_mongo(MONGO_CLIENT)
+
+print("init mongo OK")
+
 
 def make_driver():
     print("start make driver...")
@@ -20,53 +37,22 @@ def make_driver():
     return driver
 
 
-def make_mongo_client():
-    import pymongo
-    return pymongo.MongoClient("localhost", 27017,username="root", password="example")
-
-def init_mongo(client):
-    dblist = client.list_database_names()
-    db = client[DBNAME]
-    db["screenshot-png"].create_index("url", unique=True)
-    db["html"].create_index("url", unique=True)
-    print("mongo dblist: ", str(dblist))
-
-
 def db_get_html(url):
-    client = make_mongo_client()
-    db = client[DBNAME]
-    html_col = db["html"]
-    x = html_col.find_one({"url": url})
+    x = MONGO_COL_BLOG_POST.find_one({"url": url})
     if x:
         return x['html']
 
-def db_save_html(url, html):
-    client = make_mongo_client()
-    db = client[DBNAME]
-    html_col = db["html"]
-    html_col.insert_one({"url": url, "html": html})
+def db_save_html_and_pic(url, html, png):
+    MONGO_COL_BLOG_POST.insert_one({"url": url, "html": html, "png": png})
+
 
 def db_get_screenshot(url):
-    client = make_mongo_client()
-    db = client[DBNAME]
-    ccol = db["screenshot-png"]
-    x = ccol.find_one({"url": url})
+    x = MONGO_COL_BLOG_POST.find_one({"url": url})
     if x:
-        return ['png']
+        return x['png']
 
 def db_get_all_screenshot():
-    client = make_mongo_client()
-    db = client[DBNAME]
-    ccol = db["screenshot-png"]
-    return ccol.find()
-
-
-def db_set_screenshot(url, png):
-    client = make_mongo_client()
-    db = client[DBNAME]
-    ccol = db["screenshot-png"]
-    ccol.insert_one({"url": url, "png": png})
-
+    return MONGO_COL_BLOG_POST.find()
 
 def render_page_to_html(driver, url):
     if html:= db_get_html(url):
@@ -77,8 +63,7 @@ def render_page_to_html(driver, url):
     html = driver.find_element(By.TAG_NAME, "html").get_attribute('innerHTML')
 
     print("got html len: {}", len(html))
-    db_save_html(url, html)
-    db_set_screenshot(url, driver.get_screenshot_as_png())
+    db_save_html_and_pic(url, html,  driver.get_screenshot_as_png())
     return html
 
 
@@ -138,8 +123,6 @@ def example_alex_scrape_ceva(driver):
 
 
 if __name__ == "__main__":
-    monclient = make_mongo_client()
-    init_mongo(monclient)
     
     driver = make_driver()
     try:
