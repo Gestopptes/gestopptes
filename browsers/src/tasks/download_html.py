@@ -3,6 +3,7 @@ import time
 import logging
 log = logging.getLogger(__name__)
 
+
 @activity.defn()
 def render_page_to_html(url):
     from selenium.webdriver.common.by import By

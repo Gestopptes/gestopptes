@@ -10,6 +10,8 @@ MONGO_CLIENT =     pymongo.MongoClient(MONGO_HOSTNAME, 27017,username="root", pa
 MONGO_DB = MONGO_CLIENT['GESTTOPTEZ']
 MONGO_COL_BLOG_POST = MONGO_DB["blog_post"]
 
+MONGO_COL_BLOG_POST_EMBEDDINGS = MONGO_DB["blog_post_EMBEDDINGS"]
+
 
 def init_mongo():
     dblist = MONGO_CLIENT.list_database_names()

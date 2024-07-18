@@ -23,13 +23,13 @@ ACTIVITY_OPT = dict(
 
 CHILD_WORKFLOW_OPT = dict(
     parent_close_policy=ParentClosePolicy.ABANDON,
-    id_reuse_policy=WorkflowIDReusePolicy.ALLOW_DUPLICATE_FAILED_ONLY,
+    id_reuse_policy=WorkflowIDReusePolicy.ALLOW_DUPLICATE,
     # id_conflict_policy=WorkflowIDConflictPolicy.USE_EXISTING,  # master branch only + execute_workflow onyl
     task_queue=Q_BROWSERS,
 )
 
 WORKFLOW_OPT = dict(
-    id_reuse_policy=WorkflowIDReusePolicy.ALLOW_DUPLICATE_FAILED_ONLY,
+    id_reuse_policy=WorkflowIDReusePolicy.ALLOW_DUPLICATE,
     # id_conflict_policy=WorkflowIDConflictPolicy.USE_EXISTING,  # master branch only
     task_queue=Q_BROWSERS,
 )

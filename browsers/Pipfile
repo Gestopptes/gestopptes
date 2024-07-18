@@ -12,6 +12,9 @@ temporalio = "*"
 # temporalio = {git="https://github.com/temporalio/sdk-python", ref="main"}
 markdownify = "*"
 langchain = "*"
+llama-index = "*"
+llama-index-vector-stores-mongodb = "*"
+llama-index-embeddings-ollama = "*"
 
 [dev-packages]
 
