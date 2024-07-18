@@ -70,5 +70,5 @@ services:
       - 8080:8080
 networks:
   temporal-network:
-    driver: bridge
-    name: temporal-network
+    name: hekthon
+    external: true

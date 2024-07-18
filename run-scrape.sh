@@ -1,3 +1,3 @@
+set -ex
 cd browsers
-# pipenv run python scrape.py
-pipenv run python markdown2.py
+pipenv run python scrape.py

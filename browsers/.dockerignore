@@ -1,0 +1,7 @@
+/src
+/docker-tempo
+/.env
+docker-compose.yml
+*.py
+*.yml
+*.yaml
