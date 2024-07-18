@@ -16,6 +16,8 @@ llama-index = "*"
 llama-index-vector-stores-mongodb = "*"
 llama-index-embeddings-ollama = "*"
 langchain-text-splitters = "*"
+llama-index-storage-docstore-mongodb = "*"
+llama-index-llms-ollama = "*"
 
 [dev-packages]
 

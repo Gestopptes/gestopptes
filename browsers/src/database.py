@@ -6,7 +6,7 @@ log = logging.getLogger(__name__)
 
 from .config import MONGO_HOSTNAME
 
-MONGO_CLIENT =     pymongo.MongoClient(MONGO_HOSTNAME, 27017,username="root", password="example")
+MONGO_CLIENT = pymongo.MongoClient(MONGO_HOSTNAME, 27017,username="root", password="example")
 MONGO_DB = MONGO_CLIENT['GESTTOPTEZ']
 MONGO_COL_BLOG_POST = MONGO_DB["blog_post"]
 
