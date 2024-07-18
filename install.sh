@@ -6,6 +6,8 @@ pipenv install
 )
 
 
+docker network create hekthon 
+
 (
 cd browsers/docker-tempo
 COMPOSE_PROJECT_NAME=temporal docker-compose -f docker-compose-cass-es.yml up -d --remove-orphans
