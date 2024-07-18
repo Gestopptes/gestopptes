@@ -6,7 +6,7 @@ pipenv install
 )
 
 
-docker network create hekthon 
+docker network create hekthon || true
 
 (
 cd browsers/docker-tempo
