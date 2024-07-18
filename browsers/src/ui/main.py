@@ -1,6 +1,5 @@
-from .router import router, hd
-
 def ui_main():
+    from .router import router, hd
     try:
         template = hd.template(title="Hekthon")  # logo="/assets/hd-logo-white.svg", 
         template.add_sidebar_menu(
