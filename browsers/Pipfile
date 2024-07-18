@@ -15,6 +15,7 @@ langchain = "*"
 llama-index = "*"
 llama-index-vector-stores-mongodb = "*"
 llama-index-embeddings-ollama = "*"
+langchain-text-splitters = "*"
 
 [dev-packages]
 

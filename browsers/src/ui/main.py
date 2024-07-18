@@ -21,8 +21,10 @@ def ui_main():
 
         # A topbar contact link:
         template.add_topbar_links(
-            {"GitHub @Gestopptes/hekthon": {"icon": "github", "href": "https://github.com/Gestopptes/hekthon"}},
-            # {"Hyperdiv Docs": {"icon": "book", "href": "https://docs.hyperdiv.io/guide/getting-started"}},
+            {
+                "GitHub @Gestopptes/hekthon": {"icon": "github", "href": "https://github.com/Gestopptes/hekthon"},
+                "hyperdiv docs": {"icon": "github", "href": "https://docs.hyperdiv.io/introduction/overview"}
+            },
         )
     
         with template.body:
