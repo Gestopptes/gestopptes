@@ -68,6 +68,20 @@ services:
     volumes:
       - .:/app:ro
 
+  
+  python-browser-worker:
+    container_name: python-browser-worker
+    build: .
+    restart: always
+    command:  /bin/bash -c 'while true; do python worker.py || sleep 3; done'
+    environment:
+      HD_HOST: 0.0.0.0
+      TEMPORAL_ADDRESS: "temporal:7233"
+      MONGO_HOSTNAME: "mongo-cache"
+      SELENIUM_ADDRESS: "http://selenium-hub:4444"
+    volumes:
+      - .:/app:ro
+
 volumes:
   mongo-cache:
 
