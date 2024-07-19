@@ -1,8 +1,8 @@
 import os
 
-TEMPORAIO_URL = os.getenv("TEMPORAL_ADDRESS", "localhost:7233")
-MONGO_HOSTNAME = os.getenv("MONGO_HOSTNAME", "localhost")
-SELENIUM_ADDRESS = os.getenv("SELENIUM_ADDRESS", "http://localhost:4444")
+TEMPORAIO_URL = os.getenv("TEMPORAL_ADDRESS", "100.120.27.45:7233")
+MONGO_HOSTNAME = os.getenv("MONGO_HOSTNAME", "100.120.27.45")
+SELENIUM_ADDRESS = os.getenv("SELENIUM_ADDRESS", "http://100.120.27.45:4444")
 
 
 SCRAPE_TASK_VERSION = "v8"

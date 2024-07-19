@@ -25,6 +25,7 @@ def lama_index_demo(url):
     nodes = parser.get_nodes_from_documents([document])
 
     from llama_index.core import StorageContext
+    from llama_index.core.data_structs.data_structs import IndexDict
 
     from llama_index.vector_stores.mongodb import MongoDBAtlasVectorSearch
     from ..database import MONGO_CLIENT
@@ -40,6 +41,7 @@ def lama_index_demo(url):
     )
 
     index = VectorStoreIndex(
+        index_struct=IndexDict(index_id='516d372f-486b-4012-aeb9-2bded2391451', summary=None, nodes_dict={}, doc_id_dict={}, embeddings_dict={}),
         storage_context=storage_context,
         embed_model=ollama_embedding
     )
