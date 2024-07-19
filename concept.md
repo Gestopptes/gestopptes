@@ -7,7 +7,7 @@ This project involves using Open Source Intelligence (OSI) combined with Retriev
 1. **User Input:**
     - User specifies an event to investigate using three URLs containing specific filters or keywords.
 
-2. **Automated Search:**
+2. **Automated Google Search:**
     - Generate 5 search queries based on user input.
     - Retrieve 20 pages of results per query, totaling 100 pages.
 
@@ -54,6 +54,50 @@ This project involves using Open Source Intelligence (OSI) combined with Retriev
 - Automated search and data retrieval mechanisms.
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### IDEA 2: Self-Developing Software Bot
 
