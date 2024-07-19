@@ -1,5 +1,5 @@
 from temporalio import activity
-from ..config import LAMAINDEX_HOST
+from ..config import LAMAINDEX_HOST, LLAMA_MONGO_COLLECTION, LLAMA_INDEX_NAME, LLAMA_MONGO_DB
 
 @activity.defn
 def lama_index_demo(url):
@@ -29,7 +29,7 @@ def lama_index_demo(url):
 
     from llama_index.vector_stores.mongodb import MongoDBAtlasVectorSearch
     from ..database import MONGO_CLIENT
-    store = MongoDBAtlasVectorSearch(MONGO_CLIENT)
+    store = MongoDBAtlasVectorSearch(MONGO_CLIENT, db_name=LLAMA_MONGO_DB, collection_name=LLAMA_MONGO_COLLECTION, index_name=LLAMA_INDEX_NAME)
     storage_context = StorageContext.from_defaults(vector_store=store)
 
     from llama_index.core import VectorStoreIndex
@@ -41,7 +41,7 @@ def lama_index_demo(url):
     )
 
     index = VectorStoreIndex(
-        index_struct=IndexDict(index_id='516d372f-486b-4012-aeb9-2bded2391451', summary=None, nodes_dict={}, doc_id_dict={}, embeddings_dict={}),
+        index_struct=IndexDict(index_id=LLAMA_INDEX_NAME, summary=None, nodes_dict={}, doc_id_dict={}, embeddings_dict={}),
         storage_context=storage_context,
         embed_model=ollama_embedding
     )
