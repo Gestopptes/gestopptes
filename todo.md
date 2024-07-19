@@ -4,10 +4,10 @@
     
 - scraper ui:
   - create new scrape
-    - keep same dommain (checkbox)
-    - lista domenii accepptate
-    - regex match on endpoint
-    - max depth
-    - lista pt css class_
+    - keep same dommain (checkbox) = works
+    - lista domenii accepptate = NOT IMPLE
+    - regex match on endpoint = NOT IMMPL
+    - max depth = works
+    - lista pt css class_ = works 
   - list all sccrapes
   - each sccrape list all url
