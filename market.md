@@ -1,0 +1,2 @@
+TAM = total adressabvlke mamrket 
+  - 

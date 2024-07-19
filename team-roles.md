@@ -8,6 +8,7 @@
 - Alex https://github.com/oodapow/
     - RAG llama-index + llama3 + Neo4J
     - chat prommpts
+    - all the AI stuff
 
 
 - Cosmin https://github.com/GithubCosmin
@@ -17,3 +18,4 @@
         - revenue streams
     - presentation
     - video
+    - 
