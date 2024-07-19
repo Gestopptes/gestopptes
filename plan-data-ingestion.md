@@ -1,0 +1,9 @@
+- SOCIAL
+    - facebook
+    - xitter
+    - gram
+    - redit
+    - tiktok
+- GEO
+    - general maps
+        - gogle mmapps
