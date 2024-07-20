@@ -19,6 +19,11 @@ langchain-text-splitters = "*"
 llama-index-storage-docstore-mongodb = "*"
 llama-index-llms-ollama = "*"
 validators = "*"
+llama-index-tools-duckduckgo  = "*"
+llama-index-graph-stores-neo4j = "*"
+llama-index-tools-neo4j = "*"
+span-marker = "*"
+llama-index-extractors-entity = "*"
 
 [dev-packages]
 

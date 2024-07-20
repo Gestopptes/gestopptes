@@ -42,8 +42,10 @@ class ScrapeWorkflow:
         return SCRAPE_TASK_VERSION+"__scrape_v1__"+url
     
     @workflow.run
-    async def run(self, url, depth, maxdepth, class_):
+    async def run(self, url, scrape_options, depth):
         from ..tasks import extract_links_from_url
+        from ..workflows.lama_index import LamaIndexDemoWorkflow
+        url = scrape_options["url"]
         await execute_child_workflow(
             DownloadWorkflow,
             url
@@ -54,22 +56,28 @@ class ScrapeWorkflow:
             url
         )
 
+        await execute_child_workflow(
+            LamaIndexDemoWorkflow,
+            url
+        )
+
         child_counts = 1
-        if depth >= maxdepth:
+        if depth >= scrape_options["max_depth"]:
             return child_counts
         
         urls = await execute_activity(
             extract_links_from_url,
-            url, class_,
+            url,
+            scrape_options,
         )
         
         child_counts += sum(await asyncio.gather(*[
-                execute_child_workflow(ScrapeWorkflow, next_url, depth+1, maxdepth, class_)
+                execute_child_workflow(ScrapeWorkflow, next_url, scrape_options, depth+1)
                 for next_url in urls
         ]))
 
         return child_counts
 
 
-async def execute_scrape(url, maxdepth, class_):
-    return await execute_workflow(ScrapeWorkflow, url, 1, maxdepth, class_)
+async def execute_scrape(url, scrape_options):
+    return await execute_workflow(ScrapeWorkflow, url, scrape_options, 1)

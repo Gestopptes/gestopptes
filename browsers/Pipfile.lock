@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0d89d1371186d85315139268d3944bdaccd497019e7f15334067bb9e92672346"
+            "sha256": "49a3f3045c4298389531197b70b09e5c1a528ea6e611eeaa2a0045ce77e023c1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -363,6 +363,14 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==2.6.1"
+        },
+        "duckduckgo-search": {
+            "hashes": [
+                "sha256:1a03f799b85fdfa08d5e6478624683f373b9dc35e6f145544b9cab72a4f575fa",
+                "sha256:d664ec096193e3fb43bdfae4b0ad9c04e44094b58f41998adcdd20a86ee1ed74"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==6.2.1"
         },
         "email-validator": {
             "hashes": [
@@ -731,6 +739,15 @@
             "markers": "python_version < '4.0' and python_full_version >= '3.8.1'",
             "version": "==0.1.11"
         },
+        "llama-index-graph-stores-neo4j": {
+            "hashes": [
+                "sha256:6dae881424e9e772c29cecc11f173c7e02341d42c857168c31a816fd2c1210b4",
+                "sha256:cebdc4005b8bcdb40a9c63d513a06c2c4b4da677d8843abd6ebc563c5b50886f"
+            ],
+            "index": "pypi",
+            "markers": "python_version < '4.0' and python_full_version >= '3.8.1'",
+            "version": "==0.1.4"
+        },
         "llama-index-indices-managed-llama-cloud": {
             "hashes": [
                 "sha256:13329cc64289bc2d485bea8353b7205f01b21bbb7373bb8081a77008ee0bdf58",
@@ -820,6 +837,24 @@
             ],
             "markers": "python_version < '4.0' and python_full_version >= '3.8.1'",
             "version": "==0.1.2"
+        },
+        "llama-index-tools-duckduckgo": {
+            "hashes": [
+                "sha256:07dad94efb29ecdec4af9ded7abc9bfa98d5bd5687b42246dc1822c00795a44c",
+                "sha256:0d5388fee6042169b04ba46522794b11400ae1caece77c22a627b2554d7702d8"
+            ],
+            "index": "pypi",
+            "markers": "python_version < '4.0' and python_full_version >= '3.8.1'",
+            "version": "==0.1.1"
+        },
+        "llama-index-tools-neo4j": {
+            "hashes": [
+                "sha256:96c3a292fb0552b831b85704de56616375f5703b9b8fcb35f76d05b5d9ac7b42",
+                "sha256:a2555e96e8cb515bee6de7025e75b23bddbe21ffd182d7907759f5340b9779f7"
+            ],
+            "index": "pypi",
+            "markers": "python_version < '4.0' and python_full_version >= '3.8.1'",
+            "version": "==0.1.3"
         },
         "llama-index-vector-stores-mongodb": {
             "hashes": [
@@ -1030,6 +1065,14 @@
             ],
             "markers": "python_version >= '3.5'",
             "version": "==1.0.0"
+        },
+        "neo4j": {
+            "hashes": [
+                "sha256:199677239ce11fcecabce9962af515df271c1313ba110e737dd7d668fccd0c04",
+                "sha256:8146755ac93d33cee594975172c15cffb68ab158e3358bb7a73b5e0b83367006"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==5.22.0"
         },
         "nest-asyncio": {
             "hashes": [
@@ -1506,6 +1549,20 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==4.3.0"
+        },
+        "pyreqwest-impersonate": {
+            "hashes": [
+                "sha256:0cf981a885473b9edd2a74deea89f8af08cd96a5ce4d25d8ff00cde7377e6276",
+                "sha256:1983be82abff81164df497111679f7de83814b0d149d54b8e863a175c7b36684",
+                "sha256:1e0b7e7a32a908085881af6647096e233f99ffa5389a62e66ee1e2f8e0aa861e",
+                "sha256:65823d47a695e61bd4d007673e88515eba7483bdcfc09ad0e88cb70cb3808ba3",
+                "sha256:8c91b988dbc84adc790e4336068167bb0a3091337a813c9f4160dbb6b3655c81",
+                "sha256:e24fcc08696df1bd01939b1e091eeac2192ab2d088064e3517b77d3bbea94098",
+                "sha256:f36058698b1476e2d778082d89f99e5020d2e58e2e8915a2718a42a6325dffc2",
+                "sha256:faab6381bceb7506086cc19231903d5d09919f66f9e87d8ab22e1d9abb0ffb59"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==0.5.1"
         },
         "pysocks": {
             "hashes": [

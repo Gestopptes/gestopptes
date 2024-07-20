@@ -73,7 +73,7 @@ def new_scrape_page():
     hd.h3("Submit")
     if hd.button("Start", disabled=not validated).clicked:
         from src.workflows.scrape import execute_scrape
-        task.rerun(execute_scrape, url, max_depth, link_class)
+        task.rerun(execute_scrape, url, scrape_options)
     
     if task.running:
         hd.h3("Running...")

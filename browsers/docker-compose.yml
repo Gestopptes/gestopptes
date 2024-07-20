@@ -29,6 +29,20 @@ services:
       SE_SCREEN_DEPTH: 24
       SE_SCREEN_DPI: 74
 
+
+  mongo-atlas:
+    image: mongodb/mongodb-atlas-local:latest
+    restart: always
+    container_name: mongo-atlas
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-atlas:/data/db
+    ports:
+      - "27018:27017"
+
+  
   mongo-cache:
     image: mongo
     restart: always
@@ -116,6 +130,7 @@ services:
 
 volumes:
   mongo-cache:    
+  mongo-atlas:    
   neo4j_data:
   neo4j_plugins:
 
