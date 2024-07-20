@@ -30,17 +30,17 @@ services:
       SE_SCREEN_DPI: 74
 
 
-  mongo-atlas:
-    image: mongodb/mongodb-atlas-local:latest
-    restart: always
-    container_name: mongo-atlas
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-    volumes:
-      - mongo-atlas:/data/db
-    ports:
-      - "27018:27017"
+  # mongo-atlas:
+  #   image: mongodb/mongodb-atlas-local:latest
+  #   restart: always
+  #   container_name: mongo-atlas
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: example
+  #   volumes:
+  #     - mongo-atlas:/data/db
+  #   ports:
+  #     - "27018:27017"
 
   
   mongo-cache:
@@ -105,7 +105,7 @@ services:
       - MONGO_HOSTNAME=${MONGO_HOSTNAME:-mongo-cache}  
       - SELENIUM_IP=${SELENIUM_IP:-selenium-hub}
       - IFRAME_IP
-      - LLAMAINDEX_HOST
+      - LLAMAINDEX_HOST 
       - NEO4J_HOSTNAME=${NEO4J_HOSTNAME:-neo4j}
     volumes:
       - .:/app:ro
