@@ -245,7 +245,7 @@ services:
     depends_on:
       - temporal-nginx
     environment:
-      - TEMPORAL_CORS_ORIGINS=http://localhost:3000
+      - TEMPORAL_CORS_ORIGINS=http://100.66.129.30:8080/
       - TEMPORAL_CLI_ADDRESS=temporal-nginx:7233
       - TEMPORAL_ADDRESS=temporal-nginx:7233
     image: temporalio/ui:${TEMPORAL_UI_VERSION}
