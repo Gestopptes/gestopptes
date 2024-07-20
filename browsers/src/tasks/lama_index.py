@@ -1,9 +1,9 @@
 from temporalio import activity
 from ..config import LAMAINDEX_HOST, LLAMA_MONGO_COLLECTION, LLAMA_INDEX_NAME, LLAMA_MONGO_DB
 
-def build_ollama_embedings():
-    from llama_index.embeddings.ollama import OllamaEmbedding
-    ollaam_url=f"http://{LAMAINDEX_HOST}:11435"
+from llama_index.embeddings.ollama import OllamaEmbedding
+def build_ollama_embedings() -> OllamaEmbedding:
+    ollaam_url=f"http://{LAMAINDEX_HOST}:11434"
     ollama_embedding = OllamaEmbedding(
         model_name="all-minilm",
         base_url=ollaam_url,
@@ -12,49 +12,20 @@ def build_ollama_embedings():
     )
     return ollama_embedding
 
-def build_ollama_llm():
-    from llama_index.llms.ollama import Ollama
+from llama_index.llms.ollama import Ollama
+def build_ollama_llm() -> Ollama:
     
     ollaam_url=f"http://{LAMAINDEX_HOST}:11434"
-    llm = Ollama(base_url=ollaam_url, model="llama3", request_timeout=1200.0, context_window=128_000,
+    llm = Ollama(base_url=ollaam_url, model="llama3", request_timeout=1200.0,
                  additional_kwargs={
-                    # "num_keep": 5,
-                    # "seed": 42,
-                    # "num_predict": 100,
-                    # "top_k": 20,
-                    # "top_p": 0.9,
-                    # "tfs_z": 0.5,
-                    # "typical_p": 0.7,
-                    # "repeat_last_n": 33,
-                    "temperature": 0.0,
-                    # "repeat_penalty": 1.2,
-                    # "presence_penalty": 1.5,
-                    # "frequency_penalty": 1.0,
-                    # "mirostat": 1,
-                    # "mirostat_tau": 0.8,
-                    # "mirostat_eta": 0.6,
-                    # "penalize_newline": true,
-                    # "stop": ["\n", "user:"],
-                    # "numa": false,
-                    # "num_ctx": 1024,
-                    # "num_batch": 2,
-                    # "num_gqa": 1,
-                    "main_gpu": 1,
-                    # "low_vram": false,
-                    # "f16_kv": true,
-                    # "vocab_only": false,
-                    "use_mmap": True,
-                    # "use_mlock": false,
-                    # "embedding_only": false,
-                    # "rope_frequency_base": 1.1,
-                    # "rope_frequency_scale": 0.8,
-                    # "num_thread": 8
+                    "temperature": 0.0, "num_ctx": 32_768
                 })
     return llm
 
-def build_neo4j_index(llm, emb):
+from llama_index.core import PropertyGraphIndex
+
+def build_neo4j_index(llm, emb) -> PropertyGraphIndex:
     from typing import Literal
-    from llama_index.core import PropertyGraphIndex
     from llama_index.core.indices.property_graph import SchemaLLMPathExtractor
 
     from llama_index.graph_stores.neo4j import Neo4jPropertyGraphStore
