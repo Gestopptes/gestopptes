@@ -80,8 +80,8 @@ services:
       - NEO4J_dbms_security_procedures_unrestricted=apoc.*
       - NEO4J_AUTH=neo4j/your_password
     volumes:
-      - neo4j_data:/data
-      - neo4j_plugins:/plugins
+      - C:\code\neo4j:/data
+      - C:\code\neo4j_plugins:/plugins
 
   neo4j-browser:
     build: docker-neo4j-browser
@@ -130,9 +130,7 @@ services:
 
 volumes:
   mongo-cache:    
-  mongo-atlas:    
-  neo4j_data:
-  neo4j_plugins:
+  # mongo-atlas:    
 
 
 networks:

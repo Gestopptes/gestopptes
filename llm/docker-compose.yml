@@ -1,11 +1,17 @@
 services:
-  ollama_llm:
+  ollama_gpu_0:
     image: ollama/ollama
-    container_name: ollama_llm
+    container_name: ollama_gpu_0
     ports:
       - "11434:11434"
     volumes:
       - C:/code/ollama:/root/.ollama
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - GPU_DEVICE_ORDINAL=0
+      - OLLAMA_FLASH_ATTENTION=true
+      - OLLAMA_MAX_LOADED_MODELS=1
+      - OLLAMA_KEEP_ALIVE=45m0s
     deploy:
       resources:
         reservations:
@@ -15,13 +21,19 @@ services:
               capabilities: [gpu]
     restart: always
 
-  ollama_emb:
+  ollama_gpu_1:
     image: ollama/ollama
-    container_name: ollama_emb
+    container_name: ollama_gpu_1
     ports:
       - "11435:11434"
     volumes:
       - C:/code/ollama:/root/.ollama
+    environment:
+      - CUDA_VISIBLE_DEVICES=1
+      - GPU_DEVICE_ORDINAL=1
+      - OLLAMA_FLASH_ATTENTION=true
+      - OLLAMA_MAX_LOADED_MODELS=1
+      - OLLAMA_KEEP_ALIVE=15m0s
     deploy:
       resources:
         reservations:
