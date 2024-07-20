@@ -20,7 +20,7 @@ class iframe(hd.Component, hd.Styled):
         None
     )
 
-IFRAME_PORTS = [8080, 8081, 4444]
+IFRAME_PORTS = [8080, 8081, 4444, 11434]
 
 
 for portno in IFRAME_PORTS:

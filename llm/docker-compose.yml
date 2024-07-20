@@ -1,9 +1,9 @@
 services:
-  ollama:
+  ollama1:
     image: ollama/ollama
-    container_name: ollama
+    container_name: ollama1
     ports:
-      - "11434:11434"
+      - "11436:11434"
     volumes:
       - C:/code/ollama:/root/.ollama
     deploy:
@@ -15,60 +15,30 @@ services:
               capabilities: [gpu]
     restart: always
 
-  neo4j:
-    image: neo4j:5.21.0
-    container_name: llang_neo4j
+  ollama2:
+    image: ollama/ollama
+    container_name: ollama2
+    ports:
+      - "11435:11434"
+    volumes:
+      - C:/code/ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     restart: always
-    ports:
-      - "7474:7474"
-      - "7687:7687"
-    environment:
-      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
-      - NEO4J_AUTH=neo4j/your_password
-    volumes:
-      - C:/code/neo4j:/data
-      - C:/code/neo4j_plugins:/plugins
 
-  rabbitmq:
-    image: rabbitmq:3-management
-    hostname: my-rabbit
-    container_name: some-rabbit
+  ollama-loadbalancer:
+    build: ./loadbalancer
+    container_name: ollama-loadbalancer
     ports:
-      - "15672:15672"
-      - "5672:5672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
+      - "11434:11434"
 
-  langflow:
-    container_name: langflow-ui
-    image: langflowai/langflow:latest
-    ports:
-      - "7860:7860"
-    depends_on:
-      - postgres
-    environment:
-      - LANGFLOW_DATABASE_URL=postgresql://langflow:langflow@postgres:5432/langflow
-    volumes:
-      - langflow-data:/app/langflow
-
-  postgres:
-    container_name: langflow-db
-    image: postgres:16
-    environment:
-      POSTGRES_USER: langflow
-      POSTGRES_PASSWORD: langflow
-      POSTGRES_DB: langflow
-    ports:
-      - "5432:5432"
-    volumes:
-      - langflow-postgres:/var/lib/postgresql/data
 
 networks:
   default:
     name: hekthon
     external: true
-
-volumes:
-  langflow-postgres:
-  langflow-data:
