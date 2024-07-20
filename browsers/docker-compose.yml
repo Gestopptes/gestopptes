@@ -87,12 +87,12 @@ services:
     command:  /bin/bash -c 'while true; do python ui.py || sleep 3; done'
     environment:
       - HD_HOST=0.0.0.0
-      - TEMPORAL_ADDRESS
-      - MONGO_HOSTNAME
-      - SELENIUM_IP
+      - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS:-temporal:7233}  
+      - MONGO_HOSTNAME=${MONGO_HOSTNAME:-mongo-cache}  
+      - SELENIUM_IP=${SELENIUM_IP:-selenium-hub}
       - IFRAME_IP
       - LLAMAINDEX_HOST
-      - NEO4J_HOSTNAME
+      - NEO4J_HOSTNAME=${NEO4J_HOSTNAME:-neo4j}
     volumes:
       - .:/app:ro
 
@@ -104,12 +104,12 @@ services:
     command:  /bin/bash -c 'while true; do python browser-worker.py || sleep 3; done'
     environment:
       - HD_HOST=0.0.0.0
-      - TEMPORAL_ADDRESS
-      - MONGO_HOSTNAME
-      - SELENIUM_IP
+      - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS:-temporal:7233}  
+      - MONGO_HOSTNAME=${MONGO_HOSTNAME:-mongo-cache}  
+      - SELENIUM_IP=${SELENIUM_IP:-selenium-hub}
       - IFRAME_IP
       - LLAMAINDEX_HOST
-      - NEO4J_HOSTNAME
+      - NEO4J_HOSTNAME=${NEO4J_HOSTNAME:-neo4j}
     volumes:
       - .:/app:ro
 
