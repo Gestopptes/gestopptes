@@ -1,9 +1,11 @@
-- brave search
+- LLMAMA INDEX DATA SOURCE READERS
+
     - https://llamahub.ai/l/tools/llama-index-tools-brave-search?from=
     - https://docs.llamaindex.ai/en/stable/module_guides/deploying/agents/tools/
     - https://llamahub.ai/l/tools/llama-index-tools-brave-search?from=
     - https://llamahub.ai/l/tools/llama-index-tools-duckduckgo?from=
     - https://docs.tavily.com/docs/tavily-api/llamaindex
+    - https://docs.llamaindex.ai/en/stable/api_reference/tools/arxiv/
 
 
 
