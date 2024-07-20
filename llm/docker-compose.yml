@@ -6,6 +6,13 @@ services:
       - "11434:11434"
     volumes:
       - C:/code/ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     restart: always
 
   neo4j:
