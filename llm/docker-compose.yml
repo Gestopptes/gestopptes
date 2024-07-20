@@ -1,9 +1,9 @@
 services:
-  ollama1:
+  ollama_llm:
     image: ollama/ollama
-    container_name: ollama1
+    container_name: ollama_llm
     ports:
-      - "11436:11434"
+      - "11434:11434"
     volumes:
       - C:/code/ollama:/root/.ollama
     deploy:
@@ -15,9 +15,9 @@ services:
               capabilities: [gpu]
     restart: always
 
-  ollama2:
+  ollama_emb:
     image: ollama/ollama
-    container_name: ollama2
+    container_name: ollama_emb
     ports:
       - "11435:11434"
     volumes:
@@ -30,13 +30,6 @@ services:
               count: 1
               capabilities: [gpu]
     restart: always
-
-  ollama-loadbalancer:
-    build: ./loadbalancer
-    container_name: ollama-loadbalancer
-    ports:
-      - "11434:11434"
-
 
 networks:
   default:
