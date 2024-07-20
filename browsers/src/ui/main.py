@@ -15,7 +15,8 @@ def ui_main():
                 "SCRAPE": {
                     "New Scrape": {"icon": "patch-plus", "href": "/new-scrape"},
                     "View Scrapes": {"icon": "file-earmark-bar-graph", "href": "/view-scrapes"},
-                    "Original Demo": {"icon": "gender-ambiguous", "href": "/original-demo"},
+                    "Original Demo": {"icon": "type-bold", "href": "/original-demo"},
+                    "Chat": {"icon": "chat-left-dots", "href": "/chat"},
                 },
             },
             expanded=True
