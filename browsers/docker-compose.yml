@@ -61,10 +61,12 @@ services:
       - 8888:8888
     command:  /bin/bash -c 'while true; do python ui.py || sleep 3; done'
     environment:
-      HD_HOST: 0.0.0.0
-      TEMPORAL_ADDRESS: "temporal:7233"
-      MONGO_HOSTNAME: "mongo-cache"
-      SELENIUM_ADDRESS: "http://selenium-hub:4444"
+      - HD_HOST=0.0.0.0
+      - TEMPORAL_ADDRESS
+      - MONGO_HOSTNAME
+      - SELENIUM_ADDRESS
+      - IFRAME_IP
+      - LLAMAINDEX_HOST
     volumes:
       - .:/app:ro
 
@@ -75,10 +77,12 @@ services:
     restart: always
     command:  /bin/bash -c 'while true; do python worker.py || sleep 3; done'
     environment:
-      HD_HOST: 0.0.0.0
-      TEMPORAL_ADDRESS: "temporal:7233"
-      MONGO_HOSTNAME: "mongo-cache"
-      SELENIUM_ADDRESS: "http://selenium-hub:4444"
+      - HD_HOST=0.0.0.0
+      - TEMPORAL_ADDRESS
+      - MONGO_HOSTNAME
+      - SELENIUM_ADDRESS
+      - IFRAME_IP
+      - LLAMAINDEX_HOST
     volumes:
       - .:/app:ro
 
