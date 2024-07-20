@@ -2,7 +2,7 @@ import os
 
 TEMPORAIO_URL = os.getenv("TEMPORAL_ADDRESS", "localhost:7233")
 MONGO_HOSTNAME = os.getenv("MONGO_HOSTNAME", "localhost")
-SELENIUM_ADDRESS = os.getenv("SELENIUM_ADDRESS", "http://localhost:4444")
+SELENIUM_IP = os.getenv("SELENIUM_IP", "localhost")
 IFRAME_IP = os.getenv("IFRAME_IP", "localhost")
 
 SCRAPE_TASK_VERSION = "v8"

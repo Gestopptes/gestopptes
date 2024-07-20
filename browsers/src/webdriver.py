@@ -1,4 +1,4 @@
-from .config import PAGE_LOAD_TIMEOUT, SELENIUM_ADDRESS
+from .config import PAGE_LOAD_TIMEOUT, SELENIUM_IP
 import logging
 log = logging.getLogger(__name__)
 
@@ -14,7 +14,7 @@ def make_driver():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     # options.add_argument("--no-sandbox")
-    driver = webdriver.Remote(options=options, command_executor=SELENIUM_ADDRESS)
+    driver = webdriver.Remote(options=options, command_executor=f'http://{SELENIUM_IP}:4444')
     driver.set_page_load_timeout(PAGE_LOAD_TIMEOUT)
     driver.set_script_timeout(PAGE_LOAD_TIMEOUT)
     driver.implicitly_wait(PAGE_LOAD_TIMEOUT)

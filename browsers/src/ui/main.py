@@ -10,6 +10,7 @@ def ui_main():
                     "Mongo Express": {"icon": "database", "href": "/iframe/8081"},
                     "Selenium": {"icon": "browser-chrome", "href": "/iframe/4444"},
                     "Llama Index Mongo": {"icon": "browser-chrome", "href": "/iframe/11434"},
+                    "Neo4J BROWSER": {"icon": "browser-chrome", "href": "/iframe/8082"},
                 },
                 "SCRAPE": {
                     "New Scrape": {"icon": "patch-plus", "href": "/new-scrape"},

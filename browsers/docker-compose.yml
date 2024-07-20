@@ -20,7 +20,7 @@ services:
       # SE_NODE_OVERRIDE_MAX_SESSIONS: true
       # SE_ENABLE_BROWSER_LEFTOVERS_CLEANUP: true
       SE_NODE_SESSION_TIMEOUT: 14
-      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_HOST: ${SELENIUM_IP:-selenium-hub}
       SE_EVENT_BUS_PUBLISH_PORT: 4442
       SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
       SE_DRAIN_AFTER_SESSION_COUNT: 10
@@ -53,6 +53,31 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo-cache:27017/
       ME_CONFIG_BASICAUTH: false
 
+
+  
+  neo4j:
+    image: neo4j:5.21.0
+    container_name: neo4j
+    restart: always
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - NEO4J_AUTH=neo4j/your_password
+    volumes:
+      - neo4j_data:/data
+      - neo4j_plugins:/plugins
+
+  neo4j-browser:
+    build: docker-neo4j-browser
+    container_name: neo4j-browser
+    restart: always
+    ports:
+      - "8082:8080"
+    environment:
+      - "NEO4j=http://neo4j:7687"
+
   python-ui:
     container_name: python-ui
     build: .
@@ -64,9 +89,10 @@ services:
       - HD_HOST=0.0.0.0
       - TEMPORAL_ADDRESS
       - MONGO_HOSTNAME
-      - SELENIUM_ADDRESS
+      - SELENIUM_IP
       - IFRAME_IP
       - LLAMAINDEX_HOST
+      - NEO4J_HOSTNAME
     volumes:
       - .:/app:ro
 
@@ -75,20 +101,23 @@ services:
     container_name: python-browser-worker
     build: .
     restart: always
-    command:  /bin/bash -c 'while true; do python worker.py || sleep 3; done'
+    command:  /bin/bash -c 'while true; do python browser-worker.py || sleep 3; done'
     environment:
       - HD_HOST=0.0.0.0
       - TEMPORAL_ADDRESS
       - MONGO_HOSTNAME
-      - SELENIUM_ADDRESS
+      - SELENIUM_IP
       - IFRAME_IP
       - LLAMAINDEX_HOST
+      - NEO4J_HOSTNAME
     volumes:
       - .:/app:ro
 
-volumes:
-  mongo-cache:
 
+volumes:
+  mongo-cache:    
+  neo4j_data:
+  neo4j_plugins:
 
 
 networks:
