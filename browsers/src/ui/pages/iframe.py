@@ -1,3 +1,5 @@
+import os
+from ...config import IFRAME_IP
 from ..router import hd,router
 
 class iframe(hd.Component, hd.Styled):
@@ -23,7 +25,7 @@ IFRAME_PORTS = [8080, 8081, 4444]
 
 for portno in IFRAME_PORTS:
     link = f"/iframe/{portno}"
-    src = f"http://100.66.129.30:{portno}"
+    src = f"http://{IFRAME_IP}:{portno}"
     @router.route(link)
     def iframe_page(src=src):
         iframe(src=src, width="100%", height="100%")

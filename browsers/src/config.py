@@ -1,9 +1,9 @@
 import os
 
-TEMPORAIO_URL = os.getenv("TEMPORAL_ADDRESS", "100.66.129.30:7233")
-MONGO_HOSTNAME = os.getenv("MONGO_HOSTNAME", "100.66.129.30")
-SELENIUM_ADDRESS = os.getenv("SELENIUM_ADDRESS", "http://100.66.129.30:4444")
-
+TEMPORAIO_URL = os.getenv("TEMPORAL_ADDRESS", "localhost:7233")
+MONGO_HOSTNAME = os.getenv("MONGO_HOSTNAME", "localhost")
+SELENIUM_ADDRESS = os.getenv("SELENIUM_ADDRESS", "http://localhost:4444")
+IFRAME_IP = os.getenv("IFRAME_IP", "localhost")
 
 SCRAPE_TASK_VERSION = "v8"
 
@@ -20,7 +20,7 @@ ACTIVITY_TIMEOUT = 300
 
 
 LAMAINDEX_PORT = 11434
-LAMAINDEX_HOST = '100.66.129.30'
+LAMAINDEX_HOST = os.getenv("LLAMAINDEX_HOST", "localhost")
 LLAMA_MONGO_COLLECTION = 'llama_index'
 LLAMA_MONGO_DB = 'llama_db'
 LLAMA_INDEX_NAME = 'all_minilm_ollama'

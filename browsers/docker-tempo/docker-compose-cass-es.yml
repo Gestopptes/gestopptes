@@ -7,7 +7,7 @@ services:
     ports:
       - 9042:9042
     volumes:
-      - /var/lib/cassandra
+      - temporalio_cass:/var/lib/cassandra
   elasticsearch:
     container_name: temporal-elasticsearch
     environment:
@@ -24,7 +24,7 @@ services:
     ports:
       - 9200:9200
     volumes:
-      - /var/lib/elasticsearch/data
+      - temporalio_es:/var/lib/elasticsearch/data
   temporal:
     container_name: temporal
     depends_on:
@@ -67,6 +67,11 @@ services:
       - temporal-network
     ports:
       - 8080:8080
+
+volumes:
+  temporalio_cass:
+  temporalio_es:
+  
 networks:
   temporal-network:
     name: hekthon
