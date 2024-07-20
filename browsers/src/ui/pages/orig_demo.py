@@ -9,6 +9,19 @@ class overflow_box(hd.box):
         ),
         None
     )
+    
+
+class pre(hd.Component, hd.Styled):
+    _tag = "pre"
+    
+    background_color = hd.Prop(
+        hd.CSSField(
+            "background-color",
+            hd.Optional(hd.String)
+        ),
+        None
+    )
+
 
 @router.route("/original-demo")
 def orig_demo():
@@ -37,7 +50,9 @@ def orig_demo():
 
                         hd.h2("Markdown")
                         with overflow_box(height="80%",  width="100%", overflow="scroll", padding="10px", margin="10px"):
-                            hd.code(data.get("markdown",'') ,language="markdown")
+                            with pre(background_color="#eee"):
+                                with hd.box(gap=1):
+                                    hd.text(data.get("markdown",''))
                             
                         # with hd.box(height="50%",  width="100%"):
                             # hd.code(data.get("markdown",'') ,language="markdown")
