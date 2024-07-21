@@ -72,7 +72,7 @@ def build_neo4j_index(llm, emb) -> PropertyGraphIndex:
     return index
 
 @activity.defn
-def lama_index_demo(url):
+def lama_index_demo(url, options):
     from llama_index.core.node_parser.file.markdown import MarkdownNodeParser 
 
     from ..database import db_get_markdown

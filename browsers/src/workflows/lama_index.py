@@ -11,14 +11,15 @@ class LamaIndexDemoWorkflow:
         return SCRAPE_TASK_VERSION+"__lama_demo_v2__"+url
     
     @workflow.run
-    async def run(self, url):
+    async def run(self, url, options):
         from ..tasks import lama_index_demo
         return await execute_activity(
             lama_index_demo,
             url,
+            options,
         )
 
 
 
-async def execute_lama(url):
-    return await execute_workflow(LamaIndexDemoWorkflow, url)
+async def execute_lama(url, options):
+    return await execute_workflow(LamaIndexDemoWorkflow, url, options)
