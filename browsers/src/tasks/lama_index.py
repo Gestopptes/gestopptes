@@ -44,36 +44,13 @@ def build_neo4j_index(llm, emb):
     entities = Literal["person", "nonprofit organization", "organization", "event", "fact", "product", "work of art", "law", "money", "percent", "quantity", "ordinal", "cardinal", "date", "time", "language", "geopolitical entity", "location"]
     relations = Literal["cause", "causing", "caused by", "because", "since", "after", "for", "as and of"]
 
-    # define which entities can have which relations
-    validation_schema = {
-        "person": relations,
-        "nonprofit organization": relations,
-        "organization": relations,
-        "event": relations,
-        "fact": relations,
-        "product": relations,
-        "work of art": relations,
-        "law": relations,
-        "money": relations,
-        "percent": relations,
-        "quantity": relations,
-        "ordinal": relations,
-        "cardinal": relations,
-        "date": relations,
-        "time": relations,
-        "language": relations,
-        "geopolitical entity": relations,
-        "location": relations,
-    }
-
     kg_extractor = SchemaLLMPathExtractor(
         llm=llm,
         possible_entities=entities,
         possible_relations=relations,
-        kg_validation_schema=validation_schema,
-        num_workers=2,
+        num_workers=1,
         max_triplets_per_chunk=30,
-        strict=True,
+        strict=False,
     )
     graph_store = Neo4jPropertyGraphStore(
         username="neo4j",
@@ -104,17 +81,24 @@ def lama_index_demo(url, options):
 
     document = Document(text=markdown, metadata={"url": url})
 
-    from llama_index.core.node_parser.relational.markdown_element import MarkdownElementNodeParser
+    from llama_index.core.node_parser import TokenTextSplitter
+    parser = TokenTextSplitter(
+        chunk_size=4*1024,
+        chunk_overlap=256,
+        separator="\n",
+        backup_separators=[" "],
+    )
+    nodes = parser.get_nodes_from_documents([document], show_progress=True)
 
     llm = build_openai_llm()
-    parser = MarkdownElementNodeParser(llm=llm)
-    nodes = parser.get_nodes_from_documents([document])
-
     emb = build_openai_embedings()
     index = build_neo4j_index(llm, emb)
 
     def batch_list(lst, batch_size):
         return [lst[i:i + batch_size] for i in range(0, len(lst), batch_size)]
     
-    for batch in batch_list(nodes, 8):
-        index.insert_nodes(nodes=batch)
+    for batch in batch_list(nodes, 4):
+        try:
+            index.insert_nodes(nodes=batch)
+        except:
+            print("failed to insert a batch")
