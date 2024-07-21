@@ -3,7 +3,7 @@ services:
     image: ollama/ollama
     container_name: ollama_gpu_0
     ports:
-      - "11434:11434"
+      - "11436:11434"
     volumes:
       - C:/code/ollama:/root/.ollama
     environment:
@@ -48,7 +48,7 @@ services:
     build: ./lama-proxy
     container_name: ollama-proxy
     ports:
-      - "11500:5000"
+      - "11434:5000"
 
 volumes:
   data_nginx_cache:

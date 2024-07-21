@@ -37,7 +37,7 @@ def db_set(key, val, args_str):
         pass
 
 
-API_HOST = "http://"+MONGO_HOSTNAME+":11434"
+API_HOST = "http://"+MONGO_HOSTNAME+":11436"
 
 from flask import Flask
 
