@@ -145,6 +145,7 @@ services:
       - IFRAME_IP
       - LLAMAINDEX_HOST
       - NEO4J_HOSTNAME=${NEO4J_HOSTNAME:-neo4j}
+      - OPENAI_API_KEY
     volumes:
       - .:/app:ro
 

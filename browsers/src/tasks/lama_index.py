@@ -1,11 +1,12 @@
 from temporalio import activity
-from ..config import LAMAINDEX_HOST
 
 def build_openai_embedings():
+    from ..config import LAMAINDEX_HOST
     from llama_index.embeddings.openai import OpenAIEmbedding
-    return OpenAIEmbedding(model="text-embedding-3-large")
+    return OpenAIEmbedding(model="text-embedding-3-large", api_base="http://{LAMAINDEX_HOST}:11333")
 
 def build_ollama_embedings():
+    from ..config import LAMAINDEX_HOST
     from llama_index.embeddings.ollama import OllamaEmbedding
     ollaam_url=f"http://{LAMAINDEX_HOST}:11434"
     ollama_embedding = OllamaEmbedding(
@@ -17,10 +18,12 @@ def build_ollama_embedings():
     return ollama_embedding
 
 def build_openai_llm():
+    from ..config import LAMAINDEX_HOST
     from llama_index.llms.openai import OpenAI
     return OpenAI(model="gpt-4o-mini", api_base="http://{LAMAINDEX_HOST}:11333")
 
 def build_ollama_llm():
+    from ..config import LAMAINDEX_HOST
     from llama_index.llms.ollama import Ollama
     ollaam_url=f"http://{LAMAINDEX_HOST}:11434"
     llm = Ollama(base_url=ollaam_url, model="llama3", request_timeout=1200.0,
@@ -29,9 +32,9 @@ def build_ollama_llm():
                 })
     return llm
 
-from llama_index.core import PropertyGraphIndex
 
-def build_neo4j_index(llm, emb) -> PropertyGraphIndex:
+def build_neo4j_index(llm, emb):
+    from llama_index.core import PropertyGraphIndex
     from typing import Literal
     from llama_index.core.indices.property_graph import SchemaLLMPathExtractor
 
@@ -68,6 +71,8 @@ def build_neo4j_index(llm, emb) -> PropertyGraphIndex:
         possible_entities=entities,
         possible_relations=relations,
         kg_validation_schema=validation_schema,
+        num_workers=2,
+        max_triplets_per_chunk=30,
         strict=True,
     )
     graph_store = Neo4jPropertyGraphStore(
@@ -108,4 +113,8 @@ def lama_index_demo(url, options):
     emb = build_openai_embedings()
     index = build_neo4j_index(llm, emb)
 
-    index.insert_nodes(nodes=nodes[:10])
+    def batch_list(lst, batch_size):
+        return [lst[i:i + batch_size] for i in range(0, len(lst), batch_size)]
+    
+    for batch in batch_list(nodes, 8):
+        index.insert_nodes(nodes=batch)
