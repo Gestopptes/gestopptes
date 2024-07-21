@@ -41,17 +41,32 @@ def build_neo4j_index(llm, emb):
     from llama_index.graph_stores.neo4j import Neo4jPropertyGraphStore
 
     # best practice to use upper-case
-    entities = Literal["person", "nonprofit organization", "organization", "event", "fact", "product", "work of art", "law", "money", "percent", "quantity", "ordinal", "cardinal", "date", "time", "language", "geopolitical entity", "location"]
-    relations = Literal["cause", "causing", "caused by", "because", "since", "after", "for", "as and of"]
-
-    kg_extractor = SchemaLLMPathExtractor(
-        llm=llm,
-        possible_entities=entities,
-        possible_relations=relations,
-        num_workers=1,
-        max_triplets_per_chunk=60,
-        strict=False,
-    )
+    kg_extractors = [
+        SchemaLLMPathExtractor(
+            llm=llm,
+            possible_entities=Literal["person", "nonprofit_organization", "organization", "event", "fact", "product", "work_of_art", "law", "money", "percent", "quantity", "ordinal", "cardinal", "date", "time", "language", "geopolitical_entity", "location"],
+            possible_relations=["cause", "causing", "caused_by", "because", "since", "after", "for", "as_and_of"],
+            num_workers=1,
+            max_triplets_per_chunk=60,
+            strict=False,
+        ),
+        SchemaLLMPathExtractor(
+            llm=llm,
+            possible_entities=Literal["person", "nonprofit_organization", "organization", "event", "fact", "product", "work_of_art", "law", "money", "percent", "quantity", "ordinal", "cardinal", "date", "time", "language", "geopolitical_entity", "location"],
+            possible_relations=["cause", "causing", "caused_by", "because", "since", "after", "for", "as_and_of"],
+            num_workers=1,
+            max_triplets_per_chunk=60,
+            strict=False,
+        ),
+        SchemaLLMPathExtractor(
+            llm=llm,
+            possible_entities=Literal["person", "nonprofit_organization", "organization", "event", "fact", "product", "work_of_art", "law", "money", "percent", "quantity", "ordinal", "cardinal", "date", "time", "language", "geopolitical_entity", "location"],
+            possible_relations=["cause", "causing", "caused_by", "because", "since", "after", "for", "as_and_of"],
+            num_workers=1,
+            max_triplets_per_chunk=60,
+            strict=False,
+        ),
+    ]
     graph_store = Neo4jPropertyGraphStore(
         username="neo4j",
         password="your_password",
@@ -62,7 +77,7 @@ def build_neo4j_index(llm, emb):
         [],
         llm=llm,
         embed_model=emb,
-        kg_extractors=[kg_extractor],
+        kg_extractors=kg_extractors,
         property_graph_store=graph_store,
         show_progress=True,
     )
