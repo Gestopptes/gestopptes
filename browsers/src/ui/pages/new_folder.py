@@ -35,3 +35,18 @@ def display_folder(folder):
         # hd.button("edit")
         if hd.button("view").clicked:
             loc.go(f"/folder/{name}")
+
+
+@router.route("/folder/{folder_name}")
+def view_folder(folder_name):
+    folder =  MONGO_COL.find_one({"folder_name":folder_name})
+    if folder is None:
+        hd.text(f"Folder '{folder_name}' not found. Plz try again.")
+        return
+    hd.h1(f"Folder: {folder_name}")
+
+    
+    hd.h3("add new keywords and links:")
+    hd.textarea(placeholder="add keywords and urls here.")
+    if hd.button("Add").clicked:
+        hd.text("... TODO")
