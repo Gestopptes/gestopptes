@@ -3,7 +3,7 @@ from temporalio import activity
 def build_openai_embedings():
     from ..config import LAMAINDEX_HOST
     from llama_index.embeddings.openai import OpenAIEmbedding
-    return OpenAIEmbedding(model="text-embedding-3-large", api_base="http://{LAMAINDEX_HOST}:11333")
+    return OpenAIEmbedding(model="text-embedding-3-large", api_base=f"http://{LAMAINDEX_HOST}:11333/v1")
 
 def build_ollama_embedings():
     from ..config import LAMAINDEX_HOST
@@ -20,7 +20,7 @@ def build_ollama_embedings():
 def build_openai_llm():
     from ..config import LAMAINDEX_HOST
     from llama_index.llms.openai import OpenAI
-    return OpenAI(model="gpt-4o-mini", api_base="http://{LAMAINDEX_HOST}:11333")
+    return OpenAI(model="gpt-4o-mini", api_base=f"http://{LAMAINDEX_HOST}:11333/v1", temperature=0)
 
 def build_ollama_llm():
     from ..config import LAMAINDEX_HOST
