@@ -32,8 +32,58 @@ def build_ollama_llm():
                 })
     return llm
 
+def build_neo4j_vector_index(emb):
+    from llama_index.core import VectorStoreIndex
+    from llama_index.vector_stores.neo4jvector import Neo4jVectorStore
+    neo4j_vector = Neo4jVectorStore(
+        embed_dim = 1536,
+        username="neo4j",
+        password="your_password",
+        url="bolt://100.66.129.30:7687",
+    )
 
-def build_neo4j_index(llm, emb):
+    from llama_index.core import StorageContext
+
+    storage_context = StorageContext.from_defaults(vector_store=neo4j_vector)
+    index = VectorStoreIndex.from_documents(
+        [], 
+        storage_context=storage_context,
+        embed_model=emb,
+    )
+    return index
+
+
+@activity.defn
+def lama_index_url2build_neo4j_vector_index(url, options):
+    from llama_index.core.node_parser.file.markdown import MarkdownNodeParser 
+
+    from ..database import db_get_markdown
+
+    markdown = db_get_markdown(url)
+    assert markdown, "no markdown"
+
+    import re
+    markdown = re.sub(r"[(.+)](.+)", r"\1", markdown)
+
+    from llama_index.core import Document
+
+    document = Document(text=markdown, metadata={"url": url})
+
+    from llama_index.core.node_parser import TokenTextSplitter
+    parser = TokenTextSplitter(
+        chunk_size=2*1024,
+        chunk_overlap=256,
+        separator="\n",
+        backup_separators=[" "],
+    )
+    nodes = parser.get_nodes_from_documents([document], show_progress=True)
+
+    emb = build_openai_embedings()
+    index = build_neo4j_property_graph_index(emb)
+    index.insert_nodes(nodes=nodes)
+
+
+def build_neo4j_property_graph_index(llm, emb):
     from llama_index.core import PropertyGraphIndex
     from typing import Literal
     from llama_index.core.indices.property_graph import SchemaLLMPathExtractor
@@ -42,22 +92,6 @@ def build_neo4j_index(llm, emb):
 
     # best practice to use upper-case
     kg_extractors = [
-        SchemaLLMPathExtractor(
-            llm=llm,
-            possible_entities=Literal["person", "nonprofit_organization", "organization", "event", "fact", "product", "work_of_art", "law", "money", "percent", "quantity", "ordinal", "cardinal", "date", "time", "language", "geopolitical_entity", "location"],
-            possible_relations=["cause", "causing", "caused_by", "because", "since", "after", "for", "as_and_of"],
-            num_workers=1,
-            max_triplets_per_chunk=60,
-            strict=False,
-        ),
-        SchemaLLMPathExtractor(
-            llm=llm,
-            possible_entities=Literal["person", "nonprofit_organization", "organization", "event", "fact", "product", "work_of_art", "law", "money", "percent", "quantity", "ordinal", "cardinal", "date", "time", "language", "geopolitical_entity", "location"],
-            possible_relations=["cause", "causing", "caused_by", "because", "since", "after", "for", "as_and_of"],
-            num_workers=1,
-            max_triplets_per_chunk=60,
-            strict=False,
-        ),
         SchemaLLMPathExtractor(
             llm=llm,
             possible_entities=Literal["person", "nonprofit_organization", "organization", "event", "fact", "product", "work_of_art", "law", "money", "percent", "quantity", "ordinal", "cardinal", "date", "time", "language", "geopolitical_entity", "location"],
@@ -84,8 +118,9 @@ def build_neo4j_index(llm, emb):
 
     return index
 
+
 @activity.defn
-def lama_index_demo(url, options):
+def lama_index_url2property_graph_index(url, options):
     from llama_index.core.node_parser.file.markdown import MarkdownNodeParser 
 
     from ..database import db_get_markdown
@@ -111,7 +146,7 @@ def lama_index_demo(url, options):
 
     llm = build_openai_llm()
     emb = build_openai_embedings()
-    index = build_neo4j_index(llm, emb)
+    index = build_neo4j_property_graph_index(llm, emb)
 
     def batch_list(lst, batch_size):
         return [lst[i:i + batch_size] for i in range(0, len(lst), batch_size)]
