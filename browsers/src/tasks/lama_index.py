@@ -36,7 +36,8 @@ def build_neo4j_vector_index(emb):
     from llama_index.core import VectorStoreIndex
     from llama_index.vector_stores.neo4jvector import Neo4jVectorStore
     neo4j_vector = Neo4jVectorStore(
-        embed_dim = 1536,
+        embedding_dimension = 1536,
+        hybrid_search=True,
         username="neo4j",
         password="your_password",
         url="bolt://100.66.129.30:7687",
@@ -54,7 +55,7 @@ def build_neo4j_vector_index(emb):
 
 
 @activity.defn
-def lama_index_url2build_neo4j_vector_index(url, options):
+def lama_index_url2neo4j_vector_index(url, options):
     from llama_index.core.node_parser.file.markdown import MarkdownNodeParser 
 
     from ..database import db_get_markdown
@@ -79,8 +80,16 @@ def lama_index_url2build_neo4j_vector_index(url, options):
     nodes = parser.get_nodes_from_documents([document], show_progress=True)
 
     emb = build_openai_embedings()
-    index = build_neo4j_property_graph_index(emb)
-    index.insert_nodes(nodes=nodes)
+    index = build_neo4j_vector_index(emb)
+
+    def batch_list(lst, batch_size):
+        return [lst[i:i + batch_size] for i in range(0, len(lst), batch_size)]
+    
+    for batch in batch_list(nodes, 4):
+        try:
+            index.insert_nodes(nodes=batch)
+        except:
+            print("failed to insert a batch")
 
 
 def build_neo4j_property_graph_index(llm, emb):
@@ -120,7 +129,7 @@ def build_neo4j_property_graph_index(llm, emb):
 
 
 @activity.defn
-def lama_index_url2property_graph_index(url, options):
+def lama_index_url2neo4j_property_graph_index(url, options):
     from llama_index.core.node_parser.file.markdown import MarkdownNodeParser 
 
     from ..database import db_get_markdown
