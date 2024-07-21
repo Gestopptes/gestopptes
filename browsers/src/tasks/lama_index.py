@@ -32,7 +32,7 @@ def build_ollama_llm():
                 })
     return llm
 
-def build_neo4j_vector_index(emb):
+def build_neo4j_vector_index(emb, documents=[]):
     from llama_index.core import VectorStoreIndex
     from llama_index.vector_stores.neo4jvector import Neo4jVectorStore
     neo4j_vector = Neo4jVectorStore(
@@ -46,12 +46,29 @@ def build_neo4j_vector_index(emb):
     from llama_index.core import StorageContext
 
     storage_context = StorageContext.from_defaults(vector_store=neo4j_vector)
-    index = VectorStoreIndex.from_documents(
-        [], 
+    from llama_index.core.node_parser import TokenTextSplitter
+    from llama_index.core.ingestion import IngestionPipeline
+    pipeline = IngestionPipeline(
+        transformations=[
+            TokenTextSplitter(
+                chunk_size=2*1024,
+                chunk_overlap=256,
+                separator="\n",
+                backup_separators=[" "],
+            ),
+        ],
+    )
+    if documents:
+        return VectorStoreIndex(
+            nodes=pipeline.run(documents=documents),
+            storage_context=storage_context,
+            embed_model=emb,
+        )
+    return VectorStoreIndex.from_documents(
+        [],
         storage_context=storage_context,
         embed_model=emb,
     )
-    return index
 
 
 @activity.defn
@@ -70,29 +87,11 @@ def lama_index_url2neo4j_vector_index(url, options):
 
     document = Document(text=markdown, metadata={"url": url})
 
-    from llama_index.core.node_parser import TokenTextSplitter
-    parser = TokenTextSplitter(
-        chunk_size=2*1024,
-        chunk_overlap=256,
-        separator="\n",
-        backup_separators=[" "],
-    )
-    nodes = parser.get_nodes_from_documents([document], show_progress=True)
-
     emb = build_openai_embedings()
-    index = build_neo4j_vector_index(emb)
-
-    def batch_list(lst, batch_size):
-        return [lst[i:i + batch_size] for i in range(0, len(lst), batch_size)]
-    
-    for batch in batch_list(nodes, 4):
-        try:
-            index.insert_nodes(nodes=batch)
-        except:
-            print("failed to insert a batch")
+    index = build_neo4j_vector_index(emb, documents=[document])
 
 
-def build_neo4j_property_graph_index(llm, emb):
+def build_neo4j_property_graph_index(llm, emb, documents=[]):
     from llama_index.core import PropertyGraphIndex
     from typing import Literal
     from llama_index.core.indices.property_graph import SchemaLLMPathExtractor
@@ -116,16 +115,36 @@ def build_neo4j_property_graph_index(llm, emb):
         url="bolt://100.66.129.30:7687",
         # database="trump"
     )
-    index = PropertyGraphIndex.from_documents(
-        [],
-        llm=llm,
-        embed_model=emb,
-        kg_extractors=kg_extractors,
-        property_graph_store=graph_store,
-        show_progress=True,
+    
+    from llama_index.core.node_parser import TokenTextSplitter
+    from llama_index.core.ingestion import IngestionPipeline
+    pipeline = IngestionPipeline(
+        transformations=[
+            TokenTextSplitter(
+                chunk_size=2*1024,
+                chunk_overlap=256,
+                separator="\n",
+                backup_separators=[" "],
+            ),
+        ],
     )
-
-    return index
+    if documents:
+        return PropertyGraphIndex(
+            nodes=pipeline.run(documents=documents),
+            llm=llm,
+            embed_model=emb,
+            kg_extractors=kg_extractors,
+            property_graph_store=graph_store,
+            show_progress=True,
+        )
+    return PropertyGraphIndex.from_documents(
+            documents=[],
+            llm=llm,
+            embed_model=emb,
+            kg_extractors=kg_extractors,
+            property_graph_store=graph_store,
+            show_progress=True,
+        )
 
 
 @activity.defn
@@ -144,24 +163,6 @@ def lama_index_url2neo4j_property_graph_index(url, options):
 
     document = Document(text=markdown, metadata={"url": url})
 
-    from llama_index.core.node_parser import TokenTextSplitter
-    parser = TokenTextSplitter(
-        chunk_size=2*1024,
-        chunk_overlap=256,
-        separator="\n",
-        backup_separators=[" "],
-    )
-    nodes = parser.get_nodes_from_documents([document], show_progress=True)
-
     llm = build_openai_llm()
     emb = build_openai_embedings()
-    index = build_neo4j_property_graph_index(llm, emb)
-
-    def batch_list(lst, batch_size):
-        return [lst[i:i + batch_size] for i in range(0, len(lst), batch_size)]
-    
-    for batch in batch_list(nodes, 4):
-        try:
-            index.insert_nodes(nodes=batch)
-        except:
-            print("failed to insert a batch")
+    index = build_neo4j_property_graph_index(llm, emb, documents=[document])
