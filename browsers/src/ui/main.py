@@ -17,7 +17,9 @@ def ui_main():
                     "View Scrapes": {"icon": "file-earmark-bar-graph", "href": "/view-scrapes"},
                     "Original Demo": {"icon": "type-bold", "href": "/original-demo"},
                     "Chat": {"icon": "chat-left-dots", "href": "/chat"},
+                    "Chat Proxy Scan": {"icon": "chat-left-dots", "href": "/llm-proxy-scan"},
                 },
+                
             },
             expanded=True
         )
