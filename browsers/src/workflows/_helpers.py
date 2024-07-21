@@ -14,7 +14,7 @@ ACTIVITY_OPT = dict(
     # heartbeat_timeout=timedelta(seconds=16),
     retry_policy=RetryPolicy(
         backoff_coefficient=3.0,
-        maximum_attempts=3,
+        maximum_attempts=1,
         initial_interval=timedelta(seconds=ACTIVITY_TIMEOUT/9),
         maximum_interval=timedelta(seconds=ACTIVITY_TIMEOUT),
         non_retryable_error_types=["AssertionError", "TypeError"],
