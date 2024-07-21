@@ -1,3 +1,9 @@
+# Manage the llm docker containers
+Push-Location loki-the-god-of-logging
+$env:COMPOSE_PROJECT_NAME = "loki"
+docker-compose up -d --remove-orphans
+Pop-Location
+
 # Manage the temporal docker containers
 Push-Location browsers/docker-tempo
 $env:COMPOSE_PROJECT_NAME = "temporal"

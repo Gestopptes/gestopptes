@@ -9,18 +9,6 @@ x-logging:
     tag: "{{.Name}}"
 
 services:
-  nginx-app:
-    container_name: nginx-app
-    image: nginx
-    labels:
-      logging: "promtail"
-      logging_jobname: "containerlogs"
-    ports:
-      - 8086:80
-    networks:
-      - app
-    logging: *default-logging
-
   grafana:
     image: grafana/grafana:11.0.0
     container_name: grafana
@@ -63,16 +51,6 @@ services:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock
     command: -config.file=/etc/promtail/docker-config.yaml
-    depends_on:
-      - loki
-    networks:
-      - app
-    logging: *default-logging
-
-  log-generator:
-    image: us-docker.pkg.dev/grafanalabs-global/docker-explore-logs-prod/fake-log-generator:latest
-    container_name: log-generator
-    command: -url http://loki:3100/loki/api/v1/push
     depends_on:
       - loki
     networks:
