@@ -22,7 +22,7 @@ MONGO_COL = MONGO_DB["LLM_HTTP_CACHE"]
 
 def init_mongo():
     dblist = MONGO_CLIENT.list_database_names()
-    MONGO_COL.create_index("url", unique=True)
+    MONGO_COL.create_index("key", unique=True)
     print("mongo dblist: ", str(dblist))
 
 
