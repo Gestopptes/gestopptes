@@ -1,10 +1,17 @@
 from ..router import hd,router
-from ...database import db_get_markdown
+from ...database import db_get_markdown, db_get_all_urls
 @router.route("/new_datasource")
 def new_datasource():    
+    all_urls = db_get_all_urls()
+    hd.h3("new data from url:")
+    with hd.select(placeholder="Choose URl") as select:
+        for i, a in enumerate(all_urls):
+            with hd.scope(i):
+                hd.option(a)
+    url = select.value
     with hd.form() as form:
-        hd.h3("new data from url:")
-        url =     form.text_input('url').value
+        # url =     form.text_input('url').value
+
         with hd.hbox(gap=3,):
             with hd.box(width="50%", height="100%", gap=1,):
                 hd.h3("follow links only in same domain?")

@@ -6,8 +6,8 @@ from ..comp import pre, overflow_box
 
 @router.route("/original-demo")
 def orig_demo():
-    from src.database import db_get_all_url
-    screenshots = db_get_all_url()
+    from src.database import db_get_all_blogpost_data
+    screenshots = db_get_all_blogpost_data()
 
     for i, data in enumerate(screenshots):
         with hd.scope(i):

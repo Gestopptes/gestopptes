@@ -47,10 +47,12 @@ def db_get_screenshot(url):
     if x:
         return x['png']
 
+def db_get_all_urls():
+    return [x['url'] for x in MONGO_COL_BLOG_POST.find({}, {"url": 1})]
 
-def db_get_all_url():
+def db_get_all_blogpost_data():
     return MONGO_COL_BLOG_POST.find()
 
 
-def db_get_one_url():
+def db_get_one_blogpost_data():
     return MONGO_COL_BLOG_POST.find_one()
