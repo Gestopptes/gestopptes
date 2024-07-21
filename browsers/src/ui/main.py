@@ -22,6 +22,8 @@ def ui_main():
                     "Lama Proxy Scan": {"icon": "chat-left-dots", "href": "/llm-proxy-scan"},
                     "Gepeto Proxy Scan": {"icon": "chat-left-dots", "href": "/gepeto-llm-proxy-scan"},
                     "New DataSource": {"icon": "chat-left-dots", "href": "/new_datasource"},
+                    "New Folder": {"icon": "folder", "href": "/new-folder"},              
+                    
                 },
                 
             },
