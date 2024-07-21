@@ -53,7 +53,8 @@ def build_neo4j_index(llm, emb) -> PropertyGraphIndex:
         password="your_password",
         url="bolt://100.66.129.30:7687",
     )
-    index = PropertyGraphIndex(
+    index = PropertyGraphIndex.from_documents(
+        [],
         llm=llm,
         embed_model=emb,
         kg_extractors=[kg_extractor],
