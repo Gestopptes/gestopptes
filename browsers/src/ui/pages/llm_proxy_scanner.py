@@ -11,7 +11,19 @@ logging.basicConfig(level=logging.INFO)
 def llm_proxy_scan():
     MONGO_HOSTNAME = "100.66.129.30"
     MONGO_CLIENT = pymongo.MongoClient(MONGO_HOSTNAME, 27017,username="root", password="example")
-    MONGO_DB = MONGO_CLIENT['LLM_HTTP_CACHE']
+    MONGO_DB = MONGO_CLIENT['LLM_HTTP_CACHE_lama']
+    MONGO_COL = MONGO_DB["LLM_HTTP_CACHE"]
+
+    for i, x in enumerate(MONGO_COL.find()):
+        with hd.scope(i):
+            with hd.box(width="100%"):
+                llm_cache_row_display(x)
+
+@router.route("/gepeto-llm-proxy-scan")
+def gepeto_llm_proxy_scan():
+    MONGO_HOSTNAME = "100.66.129.30"
+    MONGO_CLIENT = pymongo.MongoClient(MONGO_HOSTNAME, 27017,username="root", password="example")
+    MONGO_DB = MONGO_CLIENT['LLM_HTTP_CACHE_gepetos']
     MONGO_COL = MONGO_DB["LLM_HTTP_CACHE"]
 
     for i, x in enumerate(MONGO_COL.find()):
@@ -51,10 +63,12 @@ def llm_cache_row_display(x):
                 hd.text(str(c))
                 try:
                     a = json.loads(a)
-                    a = pretty_print_dict(a)['message']['content']
-                    hd.markdown(a)
+                    a = pretty_print_dict(a)
+                    a = ['message']['content']
                 except:
                     pass
+                
+                hd.markdown(a)
 
         hd.markdown("---")
 

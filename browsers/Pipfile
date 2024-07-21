@@ -25,6 +25,7 @@ llama-index-graph-stores-neo4j = "0.2.8"
 # span-marker = "*"
 # llama-index-extractors-entity = "0.1.2"
 # flask = "*"
+flask = "*"
 
 [dev-packages]
 

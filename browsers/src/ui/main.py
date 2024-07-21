@@ -17,7 +17,8 @@ def ui_main():
                     "View Scrapes": {"icon": "file-earmark-bar-graph", "href": "/view-scrapes"},
                     "Original Demo": {"icon": "type-bold", "href": "/original-demo"},
                     "Chat": {"icon": "chat-left-dots", "href": "/chat"},
-                    "Chat Proxy Scan": {"icon": "chat-left-dots", "href": "/llm-proxy-scan"},
+                    "Lama Proxy Scan": {"icon": "chat-left-dots", "href": "/llm-proxy-scan"},
+                    "Gepeto Proxy Scan": {"icon": "chat-left-dots", "href": "/gepeto-llm-proxy-scan"},
                     "New DataSource": {"icon": "chat-left-dots", "href": "/new_datasource"},
                 },
                 
