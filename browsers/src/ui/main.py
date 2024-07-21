@@ -11,6 +11,8 @@ def ui_main():
                     "Selenium": {"icon": "browser-chrome", "href": "/iframe/4444"},
                     "Llama Index Mongo": {"icon": "browser-chrome", "href": "/iframe/11434"},
                     "Neo4J BROWSER": {"icon": "browser-chrome", "href": "/iframe/8082"},
+                    
+                    "DOCKER LOGS": {"icon": "door-closed", "href": "/iframe/3000"},
                 },
                 "SCRAPE": {
                     "New Scrape": {"icon": "patch-plus", "href": "/new-scrape"},
