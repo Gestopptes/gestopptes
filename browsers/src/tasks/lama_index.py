@@ -18,7 +18,7 @@ def build_ollama_embedings():
 
 def build_openai_llm():
     from llama_index.llms.openai import OpenAI
-    return OpenAI(model="gpt-4o-mini")
+    return OpenAI(model="gpt-4o-mini", api_base="http://{LAMAINDEX_HOST}:11333")
 
 def build_ollama_llm():
     from llama_index.llms.ollama import Ollama

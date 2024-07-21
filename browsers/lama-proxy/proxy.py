@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 import json
 
 MONGO_CLIENT = pymongo.MongoClient(MONGO_HOSTNAME, 27017,username="root", password="example")
-MONGO_DB = MONGO_CLIENT['LLM_HTTP_CACHE']
+MONGO_DB = MONGO_CLIENT['LLM_HTTP_CACHE_' + os.getenv("NAME")]
 MONGO_COL = MONGO_DB["LLM_HTTP_CACHE"]
 
 
@@ -37,7 +37,8 @@ def db_set(key, val, args_str, args_pickle, key_args_pickle):
         pass
 
 
-API_HOST = "http://"+MONGO_HOSTNAME+":11436"
+API_HOST = os.getenv("UPSTREAM")
+# API_HOST = "http://"+MONGO_HOSTNAME+":11436"
 
 from flask import Flask
 

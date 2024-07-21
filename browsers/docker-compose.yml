@@ -73,6 +73,18 @@ services:
     container_name: ollama_proxy
     ports:
       - "11434:5000"
+    environment:
+      - "UPSTREAM=http://100.66.129.30:11436"
+      - "NAME=lama"
+    
+  gepeto_proxy:
+    build: ./lama-proxy
+    container_name: gepeto_proxy
+    ports:
+      - "11333:5000"
+    environment:
+      - "UPSTREAM=https://api.openai.com"
+      - "NAME=gepetos"
   
   neo4j:
     image: neo4j:5.21.0
