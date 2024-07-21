@@ -1,5 +1,3 @@
-docker rm $(docker stop $(docker ps -aq))
-
 # Manage the temporal docker containers
 Push-Location browsers/docker-tempo
 $env:COMPOSE_PROJECT_NAME = "temporal"
