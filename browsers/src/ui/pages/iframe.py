@@ -28,7 +28,7 @@ for portno in IFRAME_PORTS:
     ip = IFRAME_IP if portno != 11434 else LAMAINDEX_HOST
     src = f"http://{ip}:{portno}"
     if portno == 3000:
-        src += r'/explore?schemaVersion=1&panes={"5oy"%3A{"datasource"%3A"P8E80F9AEF21F6940"%2C"queries"%3A[{"refId"%3A"A"%2C"expr"%3A""%2C"queryType"%3A"range"%2C"datasource"%3A{"type"%3A"loki"%2C"uid"%3A"P8E80F9AEF21F6940"}}]%2C"range"%3A{"from"%3A"now-1h"%2C"to"%3A"now"}}}&orgId=1'
+        src += r'/d/loki-containers-dashboard/logs-container?orgId=1'
     @router.route(link)
     def iframe_page(src=src):
         hd.link("Original page: " + src, href=src)
