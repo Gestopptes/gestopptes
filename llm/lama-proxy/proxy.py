@@ -30,9 +30,9 @@ def db_get(key):
     return MONGO_COL.find_one({"key": key})
 
 
-def db_set(key, val, args_str):
+def db_set(key, val, args_str, args_pickle, key_args_pickle):
     try:
-        MONGO_COL.insert_one({"key": key, "val": val, "args_str": args_str})
+        MONGO_COL.insert_one({"key": key, "val": val, "args_str": args_str, "args_pickle":args_pickle, "key_args_pickle":key_args_pickle})
     except DuplicateKeyError:
         pass
 
@@ -56,11 +56,14 @@ def redirect_to_API_HOST(path):  #NOTE var :path will be unused as all path we n
         allow_redirects = False,
     )
     args_txt = repr(args)
+    args_pickle = pickle.dumps(args)
     log.info("got request: %s", args_txt)
     args_for_key = dict(args)
     del args_for_key['headers']
     del args_for_key['cookies']
+
     args_key = hashlib.md5(pickle.dumps(args_for_key)).hexdigest()
+    key_args_pickle = pickle.dumps(args_key)
     if cached:= db_get(args_key):
         log.warning("CACHE HIT")
         val = cached['val']
@@ -83,7 +86,7 @@ def redirect_to_API_HOST(path):  #NOTE var :path will be unused as all path we n
     to_cache = pickle.dumps(to_cache)
     
     log.warning("CACHE SET")
-    db_set(args_key, to_cache, args_txt)
+    db_set(args_key, to_cache, args_txt, args_pickle, key_args_pickle)
     response = Response(res.content, res.status_code, headers)
     
     return response
