@@ -10,7 +10,6 @@ logging.basicConfig(level=logging.INFO)
 @router.route("/llm-proxy-scan")
 def llm_proxy_scan():
     MONGO_HOSTNAME = "100.66.129.30"
-    import json
     MONGO_CLIENT = pymongo.MongoClient(MONGO_HOSTNAME, 27017,username="root", password="example")
     MONGO_DB = MONGO_CLIENT['LLM_HTTP_CACHE']
     MONGO_COL = MONGO_DB["LLM_HTTP_CACHE"]
@@ -39,6 +38,25 @@ def llm_cache_row_display(x):
             hd.text(args)
             with hd.box(width="80%", border="3px solid green"):
                 hd.markdown(content)
+        if x.get("val"):
+            with hd.box(border="3px solid red", width="100%"):
+                hd.h5("RESPONSE")
+                (a, b, c) = pickle.loads(x.get("val"))
+                
+                hd.h5("a")
+                hd.text(str(a))
+                hd.h5("b")
+                hd.text(str(b))
+                hd.h5("c")
+                hd.text(str(c))
+                try:
+                    a = json.loads(a)
+                    a = pretty_print_dict(a)['message']['content']
+                    hd.markdown(a)
+                except:
+                    pass
+
+        hd.markdown("---")
 
 def pretty_print(x):
     try:

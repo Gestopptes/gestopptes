@@ -1,13 +1,2 @@
-- functie acre primeste html si scoate markdown folosind markdownify
-- functie care ia markdown si scoate sectiuni de doccument ncu metadate despre headere din markdown si daca e cod sau nu
-    - folosdin langcchain markdown document loader / poate lamaindex
-    
-- scraper ui:
-  - create new scrape
-    - keep same dommain (checkbox) = works
-    - lista domenii accepptate = NOT IMPLE
-    - regex match on endpoint = NOT IMMPL
-    - max depth = works
-    - lista pt css class_ = works 
-  - list all sccrapes
-  - each sccrape list all url
+- markdown delete all links with regex
+- 
