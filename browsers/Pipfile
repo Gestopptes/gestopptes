@@ -24,6 +24,7 @@ llama-index-graph-stores-neo4j = "*"
 llama-index-tools-neo4j = "*"
 span-marker = "*"
 llama-index-extractors-entity = "*"
+flask = "*"
 
 [dev-packages]
 
