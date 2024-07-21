@@ -50,3 +50,7 @@ def db_get_screenshot(url):
 
 def db_get_all_url():
     return MONGO_COL_BLOG_POST.find()
+
+
+def db_get_one_url():
+    return MONGO_COL_BLOG_POST.find_one()

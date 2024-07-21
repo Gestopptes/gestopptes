@@ -3,6 +3,7 @@ from ..comp import pre
 import pymongo
 import logging
 import pickle
+import json
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
@@ -27,17 +28,21 @@ def llm_cache_row_display(x):
         if x.get("args_pickle"):
             hd.h5("args:")
             args = pickle.loads(x.get("args_pickle"))
-            args = pretty_print(args)
+            args, content = pretty_print(args)
             hd.text(args)
+            hd.markdown(content)
         if x.get("key_args_pickle"):
             hd.h5("key args:")
             args = pickle.loads(x.get("key_args_pickle"))
-            args = pretty_print(args)
+            args,content = pretty_print(args)
             hd.text(args)
+            with hd.box(width="80%", border="3px solid green"):
+                hd.markdown(content)
 
 def pretty_print(x):
-    import json
-    return json.dumps(x, indent=2)    
+    x['data'] = json.loads( x['data'])
+    content = x['data']['messages'][0]['content']
+    return (json.dumps(pretty_print_dict(x), indent=2) , content)
 
 def pretty_print_dict(x):
     if isinstance(x, dict):
