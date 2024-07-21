@@ -29,4 +29,5 @@ for portno in IFRAME_PORTS:
     src = f"http://{ip}:{portno}"
     @router.route(link)
     def iframe_page(src=src):
+        hd.link("Original page: " + src, href=src)
         iframe(src=src, width="100%", height="100%")
