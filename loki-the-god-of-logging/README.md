@@ -1,55 +1,69 @@
-# Logs with Loki
+# docker-promtail-loki
+Docker Compose Stack with Grafana Loki, Promtail and the Grafana [Explore Logs](https://grafana.com/blog/2024/04/09/find-your-logs-data-with-explore-logs-no-logql-required/) plugin.
 
-This repo contains the source code for my article [Better docker logs with Loki](https://brunopaz.dev/blog/better-docker-logs-with-loki), which demonstrates how to use Grafana Loki for better Docker Logs during development.
+> [!NOTE]  
+> For a full example with prometheus, alertmanager, cadvisor, node-exporter and loki, please see the following repo:
+> - https://github.com/ruanbekker/docker-monitoring-stack-gpnc
 
-## Pre-Requisites
+## Usage
 
-* [Docker](https://www.docker.com/)
-* [Docker Compose](https://docs.docker.com/compose/)
+Start the stack with:
 
-
-## Running the project
-
-```sh
-git clone https://github.com/brpaz/logs-with-loki
-cd logs-with-loki
-docker-compose up -d
+```bash
+make up
 ```
 
-This will start Grafana, Loki, Promtail and a Sample demo app using [ealen/echo-server](https://hub.docker.com/r/ealen/echo-server).
+Access nginx on http://localhost:8080
 
+## View Logs
 
-## Gettings the logs
+<img width="1113" alt="image" src="https://user-images.githubusercontent.com/567298/202505252-3cbc2d03-d1d2-48e6-bea7-5db54233b9a2.png">
 
-You can access your Grafana Dashboard, by going to `localhost:3000` and login with `admin/testloki`.
+Then navigate to grafana on http://localhost:3000 and select explore on the left and select the container:
 
-The Loki datasource should already configured: (you can check it by navigating to: http://localhost:3000/datasources).
+<img width="560" alt="image" src="https://user-images.githubusercontent.com/567298/202504989-e05a08a2-eb2f-41a1-85f4-9a11a8affd7c.png">
 
-If you click on Loki datasource, and go down, press the "Test" button to ensure that Grafana can communicate with Loki.
+And you will see the logs:
 
-![Loki config](docs/assets/lokiconfig.png)
+<img width="1425" alt="image" src="https://user-images.githubusercontent.com/567298/202505099-c47b76cc-3090-4eb9-8459-db659d0aac18.png">
 
+## Explore Logs
 
-Then open "Explore" tab on the left, and you will see Loki interface.
+The grafana explore-logs app can be found under explore:
 
+![image](https://github.com/user-attachments/assets/14aa2b93-8baf-441b-bd18-eeade5dd575c)
 
-If you click "Log labels", you should see some labels already populated from the Docker images.
+Any application that logs to Loki can be discovered here:
 
-![Loki](docs/assets/lokiview.png)
+<img width="1329" alt="image" src="https://github.com/user-attachments/assets/2d03c559-1046-4897-9429-eb9bc6fc89ee">
 
-The most useful one is the "container_name". Select one of the containers like `logs-with-loki_grafana_1` and you should see the respective logs appear.
+Here we can view the log content for the selected `service_name`:
 
+<img width="1327" alt="image" src="https://github.com/user-attachments/assets/1eb0e32f-5019-437e-b760-b1a63cbc8beb">
 
-![logs](docs/assets/logs.png)
+This view we can explore the different labels thats available for our selected service:
 
+<img width="1333" alt="image" src="https://github.com/user-attachments/assets/a222ab21-5c3f-4f66-b01e-9e882c1a8df2">
 
-## Learn more
+For example, we can select the `level` label, which will then append that to our LogQL query and present us with this view:
 
-* [Introduction to Loki: Like Prometheus, but for Logs | Grafana Labs](https://grafana.com/go/webinar/intro-to-loki-like-prometheus-but-for-logs/?pg=oss-loki&plcmt=hero-txt)
-* [Install Loki with Docker or Docker Compose](https://grafana.com/docs/loki/latest/installation/docker/)
-* [LogQL Cheat sheet](https://megamorf.gitlab.io/cheat-sheets/loki/)
+<img width="1330" alt="image" src="https://github.com/user-attachments/assets/f805b460-6f70-4298-a8b3-2118e4931266">
 
+We can then include `error` for example and we will see all the error logs for our selected service:
 
-## License
+<img width="1332" alt="image" src="https://github.com/user-attachments/assets/d1502c06-5cae-498d-81e0-470afd7890dd">
 
-[MIT](LICENSE)
+We can then also select "Open in Explore" and our query will be pre-populated for us, eg. `{service_name="tempo-ingester", level="error"} | logfmt`:
+
+<img width="1330" alt="image" src="https://github.com/user-attachments/assets/974b8916-c9f6-466a-994e-52d10e771353">
+
+We can also explore logs by fields:
+
+<img width="1336" alt="image" src="https://github.com/user-attachments/assets/3b459123-f132-422c-8ac3-ea69898e7f94">
+
+As well as patterns:
+
+<img width="1334" alt="image" src="https://github.com/user-attachments/assets/f2adc9b8-b808-45a5-8dab-d17accd31aa0">
+
+For more information about exploring logs without LogQL, view Grafana's blog post:
+- [Find your logs data with Explore Logs: No LogQL required!](https://grafana.com/blog/2024/04/09/find-your-logs-data-with-explore-logs-no-logql-required/)
