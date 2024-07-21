@@ -49,13 +49,14 @@ def build_neo4j_index(llm, emb):
         possible_entities=entities,
         possible_relations=relations,
         num_workers=1,
-        max_triplets_per_chunk=30,
+        max_triplets_per_chunk=60,
         strict=False,
     )
     graph_store = Neo4jPropertyGraphStore(
         username="neo4j",
         password="your_password",
         url="bolt://100.66.129.30:7687",
+        # database="trump"
     )
     index = PropertyGraphIndex.from_documents(
         [],
@@ -77,13 +78,16 @@ def lama_index_demo(url, options):
     markdown = db_get_markdown(url)
     assert markdown, "no markdown"
 
+    import re
+    markdown = re.sub(r"[(.+)](.+)", r"\1", markdown)
+
     from llama_index.core import Document
 
     document = Document(text=markdown, metadata={"url": url})
 
     from llama_index.core.node_parser import TokenTextSplitter
     parser = TokenTextSplitter(
-        chunk_size=4*1024,
+        chunk_size=2*1024,
         chunk_overlap=256,
         separator="\n",
         backup_separators=[" "],
