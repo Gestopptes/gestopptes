@@ -43,6 +43,16 @@ services:
               capabilities: [gpu]
     restart: always
 
+
+  ollama-cache:
+    build: ./lama-proxy
+    container_name: ollama-proxy
+    ports:
+      - "11500:5000"
+
+volumes:
+  data_nginx_cache:
+
 networks:
   default:
     name: hekthon
