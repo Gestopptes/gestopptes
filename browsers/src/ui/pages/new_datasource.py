@@ -29,3 +29,11 @@ def new_datasource():
         
         from src.workflows.lama_index import execute_lama
         task.rerun(execute_lama, url, options)
+
+    
+    if task.running:
+        hd.h3("Running...")
+        hd.spinner()
+    elif task.done:
+        hd.h3("Result")
+        hd.text("result: " +str(task.result))
