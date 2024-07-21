@@ -30,7 +30,8 @@ def llm_cache_row_display(x):
             args = pickle.loads(x.get("args_pickle"))
             args, content = pretty_print(args)
             hd.text(args)
-            hd.markdown(content)
+            with hd.box(width="80%", border="3px solid green"):
+                hd.markdown(content)
         if x.get("key_args_pickle"):
             hd.h5("key args:")
             args = pickle.loads(x.get("key_args_pickle"))
@@ -40,8 +41,11 @@ def llm_cache_row_display(x):
                 hd.markdown(content)
 
 def pretty_print(x):
-    x['data'] = json.loads( x['data'])
-    content = x['data']['messages'][0]['content']
+    try:
+        x['data'] = json.loads( x['data'])
+        content = x['data']['messages'][0]['content']
+    except:
+        content = ''
     return (json.dumps(pretty_print_dict(x), indent=2) , content)
 
 def pretty_print_dict(x):
