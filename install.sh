@@ -9,7 +9,7 @@ pipenv install
 docker network create hekthon || true
 
 (
-    cd loki-god-of-logging
+    cd loki-the-god-of-logging
     docker-compose up -d --remove-orphans
 )
 
