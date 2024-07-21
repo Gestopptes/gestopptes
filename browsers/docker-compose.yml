@@ -137,6 +137,8 @@ services:
     build: .
     restart: always
     command:  /bin/bash -c 'while true; do python browser-worker.py || sleep 3; done'
+    shm_size: 5g
+    mem_limit: 9g
     environment:
       - HD_HOST=0.0.0.0
       - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS:-temporal:7233}  
