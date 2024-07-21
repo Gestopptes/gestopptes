@@ -2,6 +2,7 @@ from ..router import hd,router
 from ..comp import pre
 import pymongo
 import logging
+import pickle
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
@@ -14,14 +15,24 @@ def llm_proxy_scan():
     MONGO_COL = MONGO_DB["LLM_HTTP_CACHE"]
 
     for i, x in enumerate(MONGO_COL.find()):
-        hd.scope(i)
-        llm_cache_row_display(x)
+        with hd.scope(i):
+            llm_cache_row_display(x)
 
 
 def llm_cache_row_display(x):
     with pre():
-        hd.h3(x['key'])
-        hd.text(pretty_print(x.get('args_str', '')))
+        hd.h3("key: " + x['key'])
+        hd.text(x.get('args_str', ''))
+        if x.get("args_pickle"):
+            hd.h5("args:")
+            args = pickle.loads(x.get("args_pickle"))
+            args = pretty_print(args)
+            hd.text(args)
+        if x.get("key_args_pickle"):
+            hd.h5("key args:")
+            args = pickle.loads(x.get("key_args_pickle"))
+            args = pretty_print(args)
+            hd.text(args)
 
 def pretty_print(x):
     import json
