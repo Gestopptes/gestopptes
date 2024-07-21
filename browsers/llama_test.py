@@ -1,16 +1,18 @@
 
 from src.tasks.lama_index import *
+from dotenv import load_dotenv
 
+load_dotenv()
 
 BASE_URL = 'https://en.wikipedia.org/wiki/Attempted_assassination_of_Donald_Trump'
 
 
 if __name__ == "__main__":
-    lama_index_demo(BASE_URL)
+    # lama_index_demo(BASE_URL)
 
-    emb = build_ollama_embedings()
+    emb = build_openai_embedings()
     llm = build_ollama_llm()
-    index = build_neo4j_index()
+    index = build_neo4j_index(llm, emb)
     qengine = index.as_query_engine(llm=llm)
     from llama_index.core.llms import ChatMessage
     while True:

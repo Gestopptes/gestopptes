@@ -1,8 +1,12 @@
 from temporalio import activity
-from ..config import LAMAINDEX_HOST, LLAMA_MONGO_COLLECTION, LLAMA_INDEX_NAME, LLAMA_MONGO_DB
+from ..config import LAMAINDEX_HOST
 
-from llama_index.embeddings.ollama import OllamaEmbedding
-def build_ollama_embedings() -> OllamaEmbedding:
+def build_openai_embedings():
+    from llama_index.embeddings.openai import OpenAIEmbedding
+    return OpenAIEmbedding(model="text-embedding-3-large")
+
+def build_ollama_embedings():
+    from llama_index.embeddings.ollama import OllamaEmbedding
     ollaam_url=f"http://{LAMAINDEX_HOST}:11434"
     ollama_embedding = OllamaEmbedding(
         model_name="all-minilm",
@@ -12,9 +16,12 @@ def build_ollama_embedings() -> OllamaEmbedding:
     )
     return ollama_embedding
 
-from llama_index.llms.ollama import Ollama
-def build_ollama_llm() -> Ollama:
-    
+def build_openai_llm():
+    from llama_index.llms.openai import OpenAI
+    return OpenAI(model="gpt-4o-mini")
+
+def build_ollama_llm():
+    from llama_index.llms.ollama import Ollama
     ollaam_url=f"http://{LAMAINDEX_HOST}:11434"
     llm = Ollama(base_url=ollaam_url, model="llama3", request_timeout=1200.0,
                  additional_kwargs={
@@ -79,11 +86,11 @@ def lama_index_demo(url):
 
     from llama_index.core.node_parser.relational.markdown_element import MarkdownElementNodeParser
 
-    llm = build_ollama_llm()
+    llm = build_openai_llm()
     parser = MarkdownElementNodeParser(llm=llm)
     nodes = parser.get_nodes_from_documents([document])
 
-    emb = build_ollama_embedings()
+    emb = build_openai_embedings()
     index = build_neo4j_index(llm, emb)
 
-    index.insert_nodes(nodes=nodes)
+    index.insert_nodes(nodes=nodes[:10])
