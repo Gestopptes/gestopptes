@@ -16,7 +16,8 @@ def llm_proxy_scan():
 
     for i, x in enumerate(MONGO_COL.find()):
         with hd.scope(i):
-            llm_cache_row_display(x)
+            with hd.box(width="100%"):
+                llm_cache_row_display(x)
 
 
 def llm_cache_row_display(x):

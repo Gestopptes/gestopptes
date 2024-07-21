@@ -68,6 +68,11 @@ services:
       ME_CONFIG_BASICAUTH: false
 
 
+  ollama_proxy:
+    build: ./lama-proxy
+    container_name: ollama_proxy
+    ports:
+      - "11434:5000"
   
   neo4j:
     image: neo4j:5.21.0

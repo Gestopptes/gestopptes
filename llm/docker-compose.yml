@@ -44,12 +44,6 @@ services:
     restart: always
 
 
-  ollama-cache:
-    build: ./lama-proxy
-    container_name: ollama-proxy
-    ports:
-      - "11434:5000"
-
 volumes:
   data_nginx_cache:
 
