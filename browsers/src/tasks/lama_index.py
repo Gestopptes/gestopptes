@@ -38,14 +38,29 @@ def build_neo4j_index(llm, emb) -> PropertyGraphIndex:
     from llama_index.graph_stores.neo4j import Neo4jPropertyGraphStore
 
     # best practice to use upper-case
-    entities = Literal["PERSON", "PLACE", "ORGANIZATION"]
-    relations = Literal["HAS", "PART_OF", "WORKED_ON", "WORKED_WITH", "WORKED_AT"]
+    entities = Literal["person", "nonprofit organization", "organization", "event", "fact", "product", "work of art", "law", "money", "percent", "quantity", "ordinal", "cardinal", "date", "time", "language", "geopolitical entity", "location"]
+    relations = Literal["cause", "causing", "caused by", "because", "since", "after", "for", "as and of"]
 
     # define which entities can have which relations
     validation_schema = {
-        "PERSON": ["HAS", "PART_OF", "WORKED_ON", "WORKED_WITH", "WORKED_AT"],
-        "PLACE": ["HAS", "PART_OF", "WORKED_AT"],
-        "ORGANIZATION": ["HAS", "PART_OF", "WORKED_WITH"],
+        "person": relations,
+        "nonprofit organization": relations,
+        "organization": relations,
+        "event": relations,
+        "fact": relations,
+        "product": relations,
+        "work of art": relations,
+        "law": relations,
+        "money": relations,
+        "percent": relations,
+        "quantity": relations,
+        "ordinal": relations,
+        "cardinal": relations,
+        "date": relations,
+        "time": relations,
+        "language": relations,
+        "geopolitical entity": relations,
+        "location": relations,
     }
 
     kg_extractor = SchemaLLMPathExtractor(
