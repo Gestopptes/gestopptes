@@ -15,10 +15,8 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./config/grafana/datasources/grafana.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
-      - ./config/grafana/dashboards/default.yaml:/etc/grafana/provisioning/dashboards/default.yaml
-      - ./config/grafana/plugins/app.yaml:/etc/grafana/provisioning/plugins/app.yaml
-      - ./config/grafana/dashboards/dash-files:/var/lib/grafana/dashboards
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./dash-files:/var/lib/grafana/dashboards
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin

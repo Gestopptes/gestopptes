@@ -2,7 +2,7 @@ apiVersion: 1
 
 providers:
   - name: LOKI THE GOD OF LOGGING # A uniquely identifiable name for the provider
-    folder: Logs # The folder where to place the dashboards
+    # folder: Logs # The folder where to place the dashboards
     type: file
     options:
       path:  /var/lib/grafana/dashboards
