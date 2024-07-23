@@ -11,7 +11,7 @@ pid=$!
 sleep 5
 
 echo "🔴 Retrieve models..."
-for model in llama3 llama3-groq-tool-use all-minilm; do
+for model in llama3 llama3-groq-tool-use all-minilm mistral mistral-nemo; do
     until ollama pull $model; do sleep 15; done
 done
 

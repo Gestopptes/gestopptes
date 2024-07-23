@@ -4,7 +4,7 @@ services:
     image: ollama/ollama
     container_name: ollama
     ports:
-      - "11436:11434"
+      - "11434:11434"
     volumes:
       - ollama-data:/root/.ollama
       - ./ollama3-config/entrypoint.sh:/entrypoint.sh
