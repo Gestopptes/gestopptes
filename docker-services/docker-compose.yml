@@ -21,7 +21,7 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-    restart: always
+    restart: unless-stopped
     entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
 
   ollama-webui:
@@ -40,7 +40,7 @@ services:
       - WEBUI_NAME=Open WebUI
       - WEBUI_URL=http://localhost:8083
       - WEBUI_SECRET_KEY=t0p-s3cr3t
-    restart: always
+    restart: unless-stopped
 
 
   ################ SELENIUM ##################
@@ -49,7 +49,7 @@ services:
     container_name: selenium-hub
     ports:
       - "4442-4444:4442-4444"
-    restart: always
+    restart: unless-stopped
 
   selenium-chrome:
     depends_on:
@@ -58,7 +58,7 @@ services:
       mode: replicated
       replicas: 9
     image: selenium/node-chrome:4.22.0-20240621
-    restart: always
+    restart: unless-stopped
     shm_size: 2g
     mem_limit: 2g
     environment:
@@ -81,7 +81,7 @@ services:
   ################ MONGO ##################
   mongo-cache:
     image: mongo
-    restart: always
+    restart: unless-stopped
     container_name: mongo-cache
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -95,7 +95,7 @@ services:
     depends_on:
       - mongo-cache
     image: mongo-express
-    restart: always
+    restart: unless-stopped
     ports:
       - 8081:8081
     environment:
@@ -106,7 +106,7 @@ services:
 
   # mongo-atlas:
   #   image: mongodb/mongodb-atlas-local:latest
-  #   restart: always
+  #   restart: unless-stopped
   #   container_name: mongo-atlas
   #   environment:
   #     MONGO_INITDB_ROOT_USERNAME: root
@@ -120,7 +120,7 @@ services:
   neo4j:
     image: neo4j:5.21.2
     container_name: neo4j
-    restart: always
+    restart: unless-stopped
     ports:
       - "7474:7474"
       - "7687:7687"
@@ -140,7 +140,7 @@ services:
       - neo4j
     build: docker-neo4j-browser
     container_name: neo4j-browser
-    restart: always
+    restart: unless-stopped
     ports:
       - "8082:8080"
     environment:

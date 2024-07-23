@@ -24,7 +24,7 @@ services:
   python-ui:
     container_name: python-ui
     build: .
-    restart: always
+    restart: unless-stopped
     ports:
       - 8888:8888
     command:  /bin/bash -c 'while true; do python ui.py || sleep 3; done'
@@ -44,7 +44,7 @@ services:
   python-workers:
     container_name: python-workers
     build: .
-    restart: always
+    restart: unless-stopped
     command:  /bin/bash -c 'while true; do python workers.py || sleep 8; done'
     shm_size: 5g
     mem_limit: 9g
