@@ -16,7 +16,7 @@ from langchain_community.agent_toolkits.load_tools import load_tools
 from langchain_openai import ChatOpenAI
 from langchain_ollama import OllamaLLM
 
-llm = OllamaLLM(base_url="http://localhost:11434" ,temperature=0, num_ctx=128_000, streaming=True, model="mistral")
+llm = OllamaLLM(base_url="http://localhost:11434" ,temperature=0, num_ctx=128_000, streaming=True, model="mistral", keep_alive="24h")
 # llm = ChatOpenAI(temperature=0, streaming=True, model="gpt-4o-mini")
 tools = load_tools(["ddg-search"])
 prompt = hub.pull("hwchase17/react")
