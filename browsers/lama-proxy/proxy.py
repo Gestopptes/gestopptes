@@ -9,7 +9,7 @@ import hashlib
 from flask import request, Response
 import requests  # pip package requests
 
-MONGO_HOSTNAME = "100.66.129.30"
+MONGO_HOSTNAME = os.getenv("MONGO_HOSTNAME", "localhost")
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -38,7 +38,6 @@ def db_set(key, val, args_str, args_pickle, key_args_pickle):
 
 
 API_HOST = os.getenv("UPSTREAM")
-# API_HOST = "http://"+MONGO_HOSTNAME+":11436"
 
 from flask import Flask
 
@@ -63,8 +62,8 @@ def redirect_to_API_HOST(path):  #NOTE var :path will be unused as all path we n
     del args_for_key['headers']
     del args_for_key['cookies']
 
-    args_key = hashlib.md5(pickle.dumps(args_for_key)).hexdigest()
-    key_args_pickle = pickle.dumps(args_key)
+    key_args_pickle = pickle.dumps(args_for_key)
+    args_key = hashlib.md5(key_args_pickle).hexdigest()
     if cached:= db_get(args_key):
         log.warning("CACHE HIT")
         val = cached['val']
@@ -83,11 +82,11 @@ def redirect_to_API_HOST(path):  #NOTE var :path will be unused as all path we n
     ]
     #endregion exlcude some keys in :res response
 
-    to_cache = (res.content, res.status_code, headers)
-    to_cache = pickle.dumps(to_cache)
-    
-    log.warning("CACHE SET")
-    db_set(args_key, to_cache, args_txt, args_pickle, key_args_pickle)
+    if res.status_code < 300:
+        to_cache = (res.content, res.status_code, headers)
+        to_cache = pickle.dumps(to_cache)
+        log.warning("CACHE SET")
+        db_set(args_key, to_cache, args_txt, args_pickle, key_args_pickle)
     response = Response(res.content, res.status_code, headers)
     
     return response

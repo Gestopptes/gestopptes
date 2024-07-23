@@ -34,7 +34,7 @@ def new_datasource():
     hd.h3("Submit")
     if hd.button("Start", disabled=not validated).clicked:
         
-        from src.workflows.lama_index import execute_lama
+        from src.lama_index.workflows import execute_lama
         task.rerun(execute_lama, url, options)
 
     

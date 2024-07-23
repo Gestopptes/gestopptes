@@ -1,4 +1,5 @@
 services:
+
   cassandra:
     container_name: temporal-cassandra
     image: cassandra:${CASSANDRA_VERSION}
@@ -8,6 +9,9 @@ services:
       - 9042:9042
     volumes:
       - temporalio_cass:/var/lib/cassandra
+    # environment:
+      # - MAX_HEAP_SIZE=2GB
+
   elasticsearch:
     container_name: temporal-elasticsearch
     environment:
@@ -16,7 +20,7 @@ services:
       - cluster.routing.allocation.disk.watermark.high=256mb
       - cluster.routing.allocation.disk.watermark.flood_stage=128mb
       - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms256m -Xmx256m
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
       - xpack.security.enabled=false
     image: elasticsearch:${ELASTICSEARCH_VERSION}
     networks:
@@ -25,6 +29,7 @@ services:
       - 9200:9200
     volumes:
       - temporalio_es:/var/lib/elasticsearch/data
+
   temporal:
     container_name: temporal
     depends_on:
@@ -43,6 +48,7 @@ services:
       - 7233:7233
     volumes:
       - ./dynamicconfig:/etc/temporal/config/dynamicconfig
+
   temporal-admin-tools:
     container_name: temporal-admin-tools
     depends_on:
@@ -55,13 +61,14 @@ services:
       - temporal-network
     stdin_open: true
     tty: true
+
   temporal-ui:
     container_name: temporal-ui
     depends_on:
       - temporal
     environment:
       - TEMPORAL_ADDRESS=temporal:7233
-      - TEMPORAL_CORS_ORIGINS=http://100.66.129.30:8080/
+      - TEMPORAL_CORS_ORIGINS=http://localhost:8080,http://localhost:8888
     image: temporalio/ui:${TEMPORAL_UI_VERSION}
     networks:
       - temporal-network

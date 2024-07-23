@@ -5,9 +5,9 @@ log = logging.getLogger(__name__)
 
 
 @activity.defn()
-def render_page_to_html(url):
+def selenium_render_page_to_html(url):
     from selenium.webdriver.common.by import By
-    from ..database import db_save_html_and_pic, db_get_html
+    from ...database import db_save_html_and_pic, db_get_html
     from ..webdriver import make_driver
 
     # check before getting browser

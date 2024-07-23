@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 
 @router.route("/llm-proxy-scan")
 def llm_proxy_scan():
-    MONGO_HOSTNAME = "100.66.129.30"
+    from ...config import MONGO_HOSTNAME
     MONGO_CLIENT = pymongo.MongoClient(MONGO_HOSTNAME, 27017,username="root", password="example")
     MONGO_DB = MONGO_CLIENT['LLM_HTTP_CACHE_lama']
     MONGO_COL = MONGO_DB["LLM_HTTP_CACHE"]
@@ -21,7 +21,7 @@ def llm_proxy_scan():
 
 @router.route("/gepeto-llm-proxy-scan")
 def gepeto_llm_proxy_scan():
-    MONGO_HOSTNAME = "100.66.129.30"
+    from ...config import MONGO_HOSTNAME
     MONGO_CLIENT = pymongo.MongoClient(MONGO_HOSTNAME, 27017,username="root", password="example")
     MONGO_DB = MONGO_CLIENT['LLM_HTTP_CACHE_gepetos']
     MONGO_COL = MONGO_DB["LLM_HTTP_CACHE"]

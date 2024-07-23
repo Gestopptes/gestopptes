@@ -1,11 +1,10 @@
 
-from src.tasks.lama_index import *
+from src.lama_index.tasks import *
 from dotenv import load_dotenv
 
 load_dotenv()
 
 if __name__ == "__main__":
-    llm = build_ollama_llm()
     from llama_index.core.llms import ChatMessage
     while True:
         _in = input(">>> ")
@@ -17,4 +16,4 @@ if __name__ == "__main__":
         ]
         if _in == 'exit':
             break
-        print(llm.chat(messages))
+        print(chat_ollama(messages))

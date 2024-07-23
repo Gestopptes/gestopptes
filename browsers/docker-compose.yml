@@ -1,72 +1,4 @@
 services:
-  selenium-hub:
-    image: selenium/hub:4.22.0-20240621
-    container_name: selenium-hub
-    ports:
-      - "4442-4444:4442-4444"
-    restart: always
-
-  selenium-chrome:
-    deploy:
-      mode: replicated
-      replicas: 9
-    image: selenium/node-chrome:4.22.0-20240621
-    restart: always
-    shm_size: 2g
-    mem_limit: 2g
-    environment:
-      SE_NODE_MAX_SESSIONS: 1
-      SE_START_XVFB: false
-      # SE_NODE_OVERRIDE_MAX_SESSIONS: true
-      # SE_ENABLE_BROWSER_LEFTOVERS_CLEANUP: true
-      SE_NODE_SESSION_TIMEOUT: 14
-      SE_EVENT_BUS_HOST: ${SELENIUM_IP:-selenium-hub}
-      SE_EVENT_BUS_PUBLISH_PORT: 4442
-      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
-      SE_DRAIN_AFTER_SESSION_COUNT: 10
-      SE_SCREEN_WIDTH: 1366 
-      SE_SCREEN_HEIGHT: 768 
-      SE_SCREEN_DEPTH: 24
-      SE_SCREEN_DPI: 74
-
-
-  # mongo-atlas:
-  #   image: mongodb/mongodb-atlas-local:latest
-  #   restart: always
-  #   container_name: mongo-atlas
-  #   environment:
-  #     MONGO_INITDB_ROOT_USERNAME: root
-  #     MONGO_INITDB_ROOT_PASSWORD: example
-  #   volumes:
-  #     - mongo-atlas:/data/db
-  #   ports:
-  #     - "27018:27017"
-
-  
-  mongo-cache:
-    image: mongo
-    restart: always
-    container_name: mongo-cache
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-    volumes:
-      - mongo-cache:/data/db
-    ports:
-      - "27017:27017"
-
-
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo-cache:27017/
-      ME_CONFIG_BASICAUTH: false
-
 
   ollama_proxy:
     build: ./lama-proxy
@@ -74,8 +6,9 @@ services:
     ports:
       - "11434:5000"
     environment:
-      - "UPSTREAM=http://100.66.129.30:11436"
+      - "UPSTREAM=http://ollama:11434"
       - "NAME=lama"
+      - "MONGO_HOSTNAME=mongo-cache"
     
   gepeto_proxy:
     build: ./lama-proxy
@@ -85,33 +18,8 @@ services:
     environment:
       - "UPSTREAM=https://api.openai.com"
       - "NAME=gepetos"
+      - "MONGO_HOSTNAME=mongo-cache"
   
-  neo4j:
-    image: neo4j:5.21.0
-    container_name: neo4j
-    restart: always
-    ports:
-      - "7474:7474"
-      - "7687:7687"
-    environment:
-      - NEO4J_AUTH=neo4j/your_password
-      - NEO4J_PLUGINS=\[\"apoc\"\]
-      - apoc.export.file.enabled=true
-      - apoc.import.file.enabled=true
-      - apoc.import.file.use_neo4j_config=true
-      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
-    volumes:
-      - C:\code\neo4j:/data
-      - C:\code\neo4j_plugins:/plugins
-
-  neo4j-browser:
-    build: docker-neo4j-browser
-    container_name: neo4j-browser
-    restart: always
-    ports:
-      - "8082:8080"
-    environment:
-      - "NEO4j=http://neo4j:7687"
 
   python-ui:
     container_name: python-ui
@@ -132,11 +40,11 @@ services:
       - .:/app:ro
 
   
-  python-browser-worker:
-    container_name: python-browser-worker
+  python-workers:
+    container_name: python-workers
     build: .
     restart: always
-    command:  /bin/bash -c 'while true; do python browser-worker.py || sleep 3; done'
+    command:  /bin/bash -c 'while true; do python workers.py || sleep 8; done'
     shm_size: 5g
     mem_limit: 9g
     environment:
@@ -152,9 +60,7 @@ services:
       - .:/app:ro
 
 
-volumes:
-  mongo-cache:    
-  # mongo-atlas:    
+# volumes: 
 
 
 networks:

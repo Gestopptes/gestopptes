@@ -20,7 +20,7 @@ class iframe(hd.Component, hd.Styled):
         None
     )
 
-IFRAME_PORTS = [8080, 8081, 4444, 11434, 8082, 3000]
+IFRAME_PORTS = [8080, 8081, 4444, 11434, 8082, 3000, 8083]
 
 
 for portno in IFRAME_PORTS:
@@ -29,6 +29,8 @@ for portno in IFRAME_PORTS:
     src = f"http://{ip}:{portno}"
     if portno == 3000:
         src += r'/d/loki-containers-dashboard/logs-container?orgId=1'
+    elif portno == 11434:
+        src += r'/api/tags'
     @router.route(link)
     def iframe_page(src=src):
         hd.link("Original page: " + src, href=src)

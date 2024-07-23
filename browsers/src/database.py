@@ -16,7 +16,7 @@ MONGO_COL_BLOG_POST_EMBEDDINGS = MONGO_DB["blog_post_EMBEDDINGS"]
 def init_mongo():
     dblist = MONGO_CLIENT.list_database_names()
     MONGO_COL_BLOG_POST.create_index("url", unique=True)
-    print("mongo dblist: ", str(dblist))
+    log.info("mongo dblist: %s", str(dblist))
 
 
 def db_get_html(url):

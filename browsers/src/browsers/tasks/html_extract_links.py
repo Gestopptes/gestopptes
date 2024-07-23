@@ -34,7 +34,7 @@ def accept_url_link(next_url, scrape_options):
 def extract_links_from_url(url, scrape_options):
     from bs4 import BeautifulSoup
     from urllib.parse import urljoin
-    from ..database import db_get_html
+    from ...database import db_get_html
     class_ = scrape_options['link_class']
 
     html = db_get_html(url)
@@ -44,12 +44,12 @@ def extract_links_from_url(url, scrape_options):
     urls = set()
 
     a_tags = soup.find_all('a', class_=class_, href=True) if class_ else soup.find_all('a', href=True)
+    activity.logger.info("found %s link tags", len(a_tags))
     for a_tag in a_tags:
         href = a_tag['href']
         full_url = urljoin(url, href)
         full_url = _remove_url_params(full_url)
-        urls.add(full_url)
-        log.info("adding new url to visit: %s", full_url)
-
-    urls = set([u for u in urls if accept_url_link(u, scrape_options)])
+        if accept_url_link(full_url, scrape_options):
+            urls.add(full_url)
+            log.info("extracted link: %s", full_url)
     return urls

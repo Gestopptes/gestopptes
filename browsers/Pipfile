@@ -13,7 +13,6 @@ temporalio = "*"
 # span-marker = "*"
 flask = "*"
 python-dotenv = "*"
-
 markdownify = "*"
 validators = "*"
 llama-index = "0.10.56"
@@ -26,6 +25,7 @@ llama-index-graph-stores-neo4j = "0.2.8"
 llama-index-vector-stores-neo4jvector = "0.1.6"
 # llama-index-tools-neo4j = "0.1.3"
 # llama-index-extractors-entity = "0.1.2"
+watchdog = "*"
 
 [dev-packages]
 

@@ -18,12 +18,11 @@ with workflow.unsafe.imports_passed_through():
     import src
     import src.config
     import src.database
-    import src.webdriver
-    import src.tasks
-    import src.workflows
-    import src.workers
+    import src.browsers.webdriver
+    import src.lama_index
+    import src.browsers.workers
 
-    from src.workflows.scrape import execute_scrape
+    from src.browsers.workflows import run_scrape
 
     from src.database import init_mongo
 
@@ -40,10 +39,10 @@ async def main():
     # Start client
 
     # Run a worker for the workflow
-    worker1 = await src.workers.browser_worker()
+    worker1 = await src.browsers.workers.worker_selenium()
     async with worker1:
         # async with src.workers.cpu_worker(client):
-        x = await execute_scrape(BASE_URL, MAX_DEPTH, SCRAPE_CLASS)
+        x = await run_scrape(BASE_URL, MAX_DEPTH, SCRAPE_CLASS)
         print(f"finished scrape: total pages = {x}")
 
 

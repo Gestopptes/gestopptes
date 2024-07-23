@@ -1,9 +1,5 @@
-import hyperdiv as hd
-
-import importlib
-import pkgutil
 import logging
-
+logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
 
@@ -14,6 +10,8 @@ def import_submodules(package, recursive=True, ignore=[]):
     :type package: str | module
     :rtype: dict[str, types.ModuleType]
     """
+    import importlib
+    import pkgutil
     if isinstance(package, str):
         package = importlib.import_module(package)
     results = {}
@@ -30,9 +28,14 @@ def import_submodules(package, recursive=True, ignore=[]):
             results.update(import_submodules(full_name))
     return results
 
-import_submodules("src")
-log.info("import finished.")
 
-from src.ui.main import ui_main
+def start_ui():
+    import_submodules("src.ui")
+    log.info("import finished.")
+    import hyperdiv as hd
+    from src.ui.main import ui_main
+    hd.run(ui_main)
 
-hd.run(ui_main)
+    
+if __name__ == "__main__":
+    start_ui()

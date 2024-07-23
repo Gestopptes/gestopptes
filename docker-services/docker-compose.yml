@@ -1,0 +1,161 @@
+services:
+  ################ OLAMA ##################
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11436:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+      - ./ollama3-config/entrypoint.sh:/entrypoint.sh
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - GPU_DEVICE_ORDINAL=0
+      - OLLAMA_FLASH_ATTENTION=true
+      - OLLAMA_MAX_LOADED_MODELS=4
+      - OLLAMA_KEEP_ALIVE=24h
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: always
+    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+
+  ollama-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: ollama-webui
+    volumes:
+      - ollama-webui-data:/app/backend/data
+    depends_on:
+      - ollama
+    ports:
+      - 8083:8080
+    environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
+      - OLLAMA_BASE_URLS=http://ollama:11434 #comma separated ollama hosts
+      - ENV=dev
+      - WEBUI_AUTH=False
+      - WEBUI_NAME=Open WebUI
+      - WEBUI_URL=http://localhost:8083
+      - WEBUI_SECRET_KEY=t0p-s3cr3t
+    restart: always
+
+
+  ################ SELENIUM ##################
+  selenium-hub:
+    image: selenium/hub:4.22.0-20240621
+    container_name: selenium-hub
+    ports:
+      - "4442-4444:4442-4444"
+    restart: always
+
+  selenium-chrome:
+    depends_on:
+      - selenium-hub
+    deploy:
+      mode: replicated
+      replicas: 9
+    image: selenium/node-chrome:4.22.0-20240621
+    restart: always
+    shm_size: 2g
+    mem_limit: 2g
+    environment:
+      SE_NODE_MAX_SESSIONS: 1
+      SE_START_XVFB: false
+      # SE_NODE_OVERRIDE_MAX_SESSIONS: true
+      # SE_ENABLE_BROWSER_LEFTOVERS_CLEANUP: true
+      SE_NODE_SESSION_TIMEOUT: 14
+      SE_EVENT_BUS_HOST: ${SELENIUM_IP:-selenium-hub}
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+      SE_DRAIN_AFTER_SESSION_COUNT: 10
+      SE_SCREEN_WIDTH: 1366 
+      SE_SCREEN_HEIGHT: 768 
+      SE_SCREEN_DEPTH: 24
+      SE_SCREEN_DPI: 74
+
+
+  
+  ################ MONGO ##################
+  mongo-cache:
+    image: mongo
+    restart: always
+    container_name: mongo-cache
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-cache:/data/db
+    ports:
+      - "27017:27017"
+
+  mongo-express:
+    depends_on:
+      - mongo-cache
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo-cache:27017/
+      ME_CONFIG_BASICAUTH: false
+
+  # mongo-atlas:
+  #   image: mongodb/mongodb-atlas-local:latest
+  #   restart: always
+  #   container_name: mongo-atlas
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: example
+  #   volumes:
+  #     - mongo-atlas:/data/db
+  #   ports:
+  #     - "27018:27017"
+
+  ################ NEO 4j ##################
+  neo4j:
+    image: neo4j:5.21.0
+    container_name: neo4j
+    restart: always
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/your_password
+      - NEO4J_PLUGINS=\[\"apoc\"\]
+      - apoc.export.file.enabled=true
+      - apoc.import.file.enabled=true
+      - apoc.import.file.use_neo4j_config=true
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+    volumes:
+      - neo4j-data:/data
+      - neo4j-plugins:/plugins
+
+  neo4j-browser:
+    depends_on:
+      - neo4j
+    build: docker-neo4j-browser
+    container_name: neo4j-browser
+    restart: always
+    ports:
+      - "8082:8080"
+    environment:
+      - "NEO4j=http://neo4j:7687"
+
+
+volumes:
+  ollama-data:
+  ollama-webui-data:
+  mongo-cache:   
+  # mongo-atlas:    
+  neo4j-data:
+  neo4j-plugins:
+  
+networks:
+  default:
+    name: hekthon
+    external: true

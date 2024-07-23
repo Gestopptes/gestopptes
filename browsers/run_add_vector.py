@@ -1,5 +1,5 @@
 
-from src.tasks.lama_index import *
+from src.lama_index.tasks import *
 from dotenv import load_dotenv
 
 load_dotenv()

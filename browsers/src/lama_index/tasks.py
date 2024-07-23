@@ -33,6 +33,7 @@ def build_ollama_llm():
     return llm
 
 def build_neo4j_vector_index(emb, documents=[]):
+    from ..config import NEO4J_HOSTNAME
     from llama_index.core import VectorStoreIndex
     from llama_index.vector_stores.neo4jvector import Neo4jVectorStore
     neo4j_vector = Neo4jVectorStore(
@@ -40,7 +41,7 @@ def build_neo4j_vector_index(emb, documents=[]):
         hybrid_search=True,
         username="neo4j",
         password="your_password",
-        url="bolt://100.66.129.30:7687",
+        url=f"bolt://{NEO4J_HOSTNAME}:7687",
     )
 
     from llama_index.core import StorageContext
@@ -87,11 +88,13 @@ def lama_index_url2neo4j_vector_index(url, options):
 
     document = Document(text=markdown, metadata={"url": url})
 
-    emb = build_openai_embedings()
+    # emb = build_openai_embedings()
+    emb = build_ollama_embedings()
     index = build_neo4j_vector_index(emb, documents=[document])
 
 
 def build_neo4j_property_graph_index(llm, emb, documents=[]):
+    from ..config import NEO4J_HOSTNAME
     from llama_index.core import PropertyGraphIndex
     from typing import Literal
     from llama_index.core.indices.property_graph import SchemaLLMPathExtractor
@@ -112,7 +115,7 @@ def build_neo4j_property_graph_index(llm, emb, documents=[]):
     graph_store = Neo4jPropertyGraphStore(
         username="neo4j",
         password="your_password",
-        url="bolt://100.66.129.30:7687",
+        url=f"bolt://{NEO4J_HOSTNAME}:7687",
         # database="trump"
     )
     
@@ -166,3 +169,28 @@ def lama_index_url2neo4j_property_graph_index(url, options):
     llm = build_openai_llm()
     emb = build_openai_embedings()
     index = build_neo4j_property_graph_index(llm, emb, documents=[document])
+
+
+
+@activity.defn
+def chat_with_property_graph(input):
+    emb = build_ollama_embedings()
+    llm = build_ollama_llm()
+    index = build_neo4j_property_graph_index(llm, emb)
+    qengine = index.as_query_engine(llm=llm)
+    return qengine.query(input)
+
+
+@activity.defn
+def chat_with_vectors(input):
+    emb = build_openai_embedings()
+    llm = build_ollama_llm()
+    index = build_neo4j_vector_index(llm, emb)
+    ret = index.as_retriever()
+    return ret.retrieve(input)
+
+
+@activity.defn
+def chat_ollama(messages):
+    llm = build_ollama_llm()
+    return llm.chat(messages)
