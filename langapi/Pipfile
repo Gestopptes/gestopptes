@@ -17,6 +17,8 @@ streamlit = "*"
 python-dotenv = "*"
 duckduckgo-search = "*"
 langchainhub = "*"
+langchain-mongodb = "*"
+langchain-experimental = "*"
 
 [dev-packages]
 

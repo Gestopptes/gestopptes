@@ -9,8 +9,8 @@ services:
       - ollama-data:/root/.ollama
       - ./ollama3-config/entrypoint.sh:/entrypoint.sh
     environment:
-      - CUDA_VISIBLE_DEVICES=0
-      - GPU_DEVICE_ORDINAL=0
+      - CUDA_VISIBLE_DEVICES=1
+      - GPU_DEVICE_ORDINAL=1
       - OLLAMA_FLASH_ATTENTION=true
       - OLLAMA_MAX_LOADED_MODELS=4
       - OLLAMA_KEEP_ALIVE=24h

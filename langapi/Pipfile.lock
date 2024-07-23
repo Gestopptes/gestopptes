@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2cc2dde056457cf6c27b1a43126bf31526bc7b3d74e9faa145d05b332755151a"
+            "sha256": "dfae0277f635914f73108858ca214d99a25729fc16759cf102d593997847af56"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -650,6 +650,24 @@
             "markers": "python_version < '4.0' and python_full_version >= '3.8.1'",
             "version": "==0.2.23"
         },
+        "langchain-experimental": {
+            "hashes": [
+                "sha256:cb4ae7a685bb3c077d138b4533ed02e8df1f5f784333c3e52dcae8c80f031ca2",
+                "sha256:fc894599bfac43445004a9ff60d9a28751426b2fea1979e4b2fa453c847850c4"
+            ],
+            "index": "pypi",
+            "markers": "python_version < '4.0' and python_full_version >= '3.8.1'",
+            "version": "==0.0.63"
+        },
+        "langchain-mongodb": {
+            "hashes": [
+                "sha256:6ed1739c92b914a0edf7d585f52adfc3fc60d3cf37542791df3e76fc88431b0e",
+                "sha256:8066a3ed728f75deeb679721d421f9ac90e5ca2ad8289a0fa1e2ac5e57b24207"
+            ],
+            "index": "pypi",
+            "markers": "python_version < '4.0' and python_full_version >= '3.8.1'",
+            "version": "==0.1.7"
+        },
         "langchain-ollama": {
             "hashes": [
                 "sha256:002b9720aed04aca17cbe1448b534126d85ae561a9acb382d000a208c9bf7b89",
@@ -935,7 +953,7 @@
                 "sha256:f870204a840a60da0b12273ef34f7051e98c3b5961b61b0c2c1be6dfd64fbcd3",
                 "sha256:ffa75af20b44f8dba823498024771d5ac50620e6915abac414251bd971b4529f"
             ],
-            "markers": "python_version >= '3.9'",
+            "markers": "python_version < '3.12'",
             "version": "==1.26.4"
         },
         "ollama": {
