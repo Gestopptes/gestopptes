@@ -85,6 +85,7 @@ async def execute_activity(the_act, *args, **kw):
 
 
 ######################### AUTO HEARTBEATER ########################
+# https://github.com/temporalio/samples-python/blob/main/custom_decorator/activity_utils.py
 from datetime import datetime
 from functools import wraps
 from typing import Any, Awaitable, Callable, TypeVar, cast
