@@ -23,6 +23,7 @@ class LamaIndexNeo4jWorkflow:
             options,
             task_queue=Q_GPU_NAME,
             start_to_close_timeout=Q_GPU_TIMEOUT,
+            heartbeat_timeout=timedelta(seconds=5),
         )
 
 
@@ -41,6 +42,7 @@ class LamaIndexVectorsWorkflow:
             options,
             task_queue=Q_GPU_NAME,
             start_to_close_timeout=Q_GPU_TIMEOUT,
+            heartbeat_timeout=timedelta(seconds=5),
         )
 
 

@@ -1,4 +1,5 @@
 from temporalio import activity
+from ..tempo_helpers import auto_heartbeater
 
 # def build_openai_embedings():
 #     from ..config import LAMAINDEX_HOST, LAMAINDEX_PORT
@@ -18,10 +19,10 @@ def build_ollama_embedings():
     )
     return ollama_embedding
 
-def build_openai_llm():
-    from ..config import LAMAINDEX_HOST
-    from llama_index.llms.openai import OpenAI
-    return OpenAI(model="gpt-4o-mini", api_base=f"http://{LAMAINDEX_HOST}:11333/v1", temperature=0)
+# def build_openai_llm():
+#     from ..config import LAMAINDEX_HOST
+#     from llama_index.llms.openai import OpenAI
+#     return OpenAI(model="gpt-4o-mini", api_base=f"http://{LAMAINDEX_HOST}:11333/v1", temperature=0)
 
 def build_ollama_llm():
     from ..config import LAMAINDEX_HOST, LAMAINDEX_PORT
@@ -74,6 +75,7 @@ def build_neo4j_vector_index(emb, documents=[]):
 
 
 @activity.defn
+@auto_heartbeater
 def lama_index_url2neo4j_vector_index(url, options):
     from llama_index.core.node_parser.file.markdown import MarkdownNodeParser 
 
@@ -152,6 +154,7 @@ def build_neo4j_property_graph_index(llm, emb, documents=[]):
 
 
 @activity.defn
+@auto_heartbeater
 def lama_index_url2neo4j_property_graph_index(url, options):
     from llama_index.core.node_parser.file.markdown import MarkdownNodeParser 
 
@@ -167,7 +170,8 @@ def lama_index_url2neo4j_property_graph_index(url, options):
 
     document = Document(text=markdown, metadata={"url": url})
 
-    llm = build_openai_llm()
+    # llm = build_openai_llm()
+    llm = build_ollama_llm()
     # emb = build_openai_embedings()
     emb = build_ollama_embedings()
     index = build_neo4j_property_graph_index(llm, emb, documents=[document])
@@ -175,6 +179,7 @@ def lama_index_url2neo4j_property_graph_index(url, options):
 
 
 @activity.defn
+@auto_heartbeater
 def chat_with_property_graph(input):
     emb = build_ollama_embedings()
     llm = build_ollama_llm()
@@ -184,6 +189,7 @@ def chat_with_property_graph(input):
 
 
 @activity.defn
+@auto_heartbeater
 def chat_with_vectors(input):
     emb = build_ollama_embedings()
     # emb = build_openai_embedings()
@@ -194,6 +200,7 @@ def chat_with_vectors(input):
 
 
 @activity.defn
+@auto_heartbeater
 def chat_ollama(messages):
     llm = build_ollama_llm()
     return llm.chat(messages)
