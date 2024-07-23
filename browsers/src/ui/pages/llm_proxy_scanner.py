@@ -64,7 +64,7 @@ def llm_cache_row_display(x):
                 try:
                     a = json.loads(a)
                     a = pretty_print_dict(a)
-                    a = ['message']['content']
+                    a = a['message']['content']
                 except:
                     pass
                 

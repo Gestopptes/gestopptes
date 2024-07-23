@@ -34,7 +34,8 @@ services:
       - MONGO_HOSTNAME=${MONGO_HOSTNAME:-mongo-cache}  
       - SELENIUM_IP=${SELENIUM_IP:-selenium-hub}
       - IFRAME_IP
-      - LLAMAINDEX_HOST 
+      - LLAMAINDEX_HOST=${LAMAINDEX_HOST:-ollama}
+      - LLAMAINDEX_PORT=${LAMAINDEX_PORT:-5000}
       - NEO4J_HOSTNAME=${NEO4J_HOSTNAME:-neo4j}
     volumes:
       - .:/app:ro
@@ -53,7 +54,12 @@ services:
       - MONGO_HOSTNAME=${MONGO_HOSTNAME:-mongo-cache}  
       - SELENIUM_IP=${SELENIUM_IP:-selenium-hub}
       - IFRAME_IP
-      - LLAMAINDEX_HOST
+      - LLAMAINDEX_HOST=${LAMAINDEX_HOST:-ollama_proxy}
+      - LLAMAINDEX_PORT=${LAMAINDEX_PORT:-5000}
+      
+      - LLAMAINDEX_HOST_NOPROXY=${LAMAINDEX_HOST:-ollama}
+      - LLAMAINDEX_PORT_NOPROXY=${LAMAINDEX_PORT:-11434}
+
       - NEO4J_HOSTNAME=${NEO4J_HOSTNAME:-neo4j}
       - OPENAI_API_KEY
     volumes:
