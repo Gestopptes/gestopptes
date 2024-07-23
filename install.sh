@@ -9,8 +9,8 @@ pipenv install
 docker network create hekthon || true
 
 (
-    cd loki-the-god-of-logging
-    COMPOSE_PROJECT_NAME=loki-the-god-of-logging docker-compose up -d --remove-orphans
+    cd docker-logging
+    COMPOSE_PROJECT_NAME=docker-logging docker-compose up -d --remove-orphans
 )
 
 (
