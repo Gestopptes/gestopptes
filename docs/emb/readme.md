@@ -1,3 +1,4 @@
+[generated with]()
 # Using Embedding Models for Semantic Search
 
 When selecting an embedding model for a retrieval-augmented generation (RAG) system, several criteria must be considered. Here are key characteristics to keep in mind when choosing such a model:
