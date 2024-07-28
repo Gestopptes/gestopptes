@@ -19,6 +19,7 @@ duckduckgo-search = "*"
 langchainhub = "*"
 langchain-mongodb = "*"
 langchain-experimental = "*"
+markdownify = "*"
 
 [dev-packages]
 
