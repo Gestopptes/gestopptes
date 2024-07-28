@@ -1,19 +1,16 @@
 services:
-  ################ OLAMA ##################
-  ollama:
-    image: ollama/ollama
-    container_name: ollama
+
+  ################ VLLM ##################
+
+  vllm:
+    image: vllm/vllm-openai:v0.5.3.post1
+    container_name: vllm
     ports:
-      - "11434:11434"
+      - "8000:8000"
+    shm_size: 18g
+    mem_limit: 18g
     volumes:
-      - ollama-data:/root/.ollama
-      - ./ollama3-config/entrypoint.sh:/entrypoint.sh
-    environment:
-      - CUDA_VISIBLE_DEVICES=1
-      - GPU_DEVICE_ORDINAL=1
-      - OLLAMA_FLASH_ATTENTION=true
-      - OLLAMA_MAX_LOADED_MODELS=4
-      - OLLAMA_KEEP_ALIVE=24h
+      - vllm-data:/root/.cache/huggingface
     deploy:
       resources:
         reservations:
@@ -22,25 +19,50 @@ services:
               count: all
               capabilities: [gpu]
     restart: unless-stopped
-    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+    command: --model meta-llama/Meta-Llama-3.1-8B
 
-  ollama-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    container_name: ollama-webui
-    volumes:
-      - ollama-webui-data:/app/backend/data
-    depends_on:
-      - ollama
-    ports:
-      - 8083:8080
-    environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
-      - OLLAMA_BASE_URLS=http://ollama:11434 #comma separated ollama hosts
-      - ENV=dev
-      - WEBUI_AUTH=False
-      - WEBUI_NAME=Open WebUI
-      - WEBUI_URL=http://localhost:8083
-      - WEBUI_SECRET_KEY=t0p-s3cr3t
-    restart: unless-stopped
+  # ################ OLAMA ##################
+  # ollama:
+  #   image: ollama/ollama
+  #   container_name: ollama
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama-data:/root/.ollama
+  #     - ./ollama3-config/entrypoint.sh:/entrypoint.sh
+  #   environment:
+  #     - CUDA_VISIBLE_DEVICES=1
+  #     - GPU_DEVICE_ORDINAL=1
+  #     - OLLAMA_FLASH_ATTENTION=true
+  #     - OLLAMA_MAX_LOADED_MODELS=4
+  #     - OLLAMA_KEEP_ALIVE=24h
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: all
+  #             capabilities: [gpu]
+  #   restart: unless-stopped
+  #   entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+
+  # ollama-webui:
+  #   image: ghcr.io/open-webui/open-webui:main
+  #   container_name: ollama-webui
+  #   volumes:
+  #     - ollama-webui-data:/app/backend/data
+  #   depends_on:
+  #     - ollama
+  #   ports:
+  #     - 8083:8080
+  #   environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
+  #     - OLLAMA_BASE_URLS=http://ollama:11434 #comma separated ollama hosts
+  #     - ENV=dev
+  #     - WEBUI_AUTH=False
+  #     - WEBUI_NAME=Open WebUI
+  #     - WEBUI_URL=http://localhost:8083
+  #     - WEBUI_SECRET_KEY=t0p-s3cr3t
+  #   restart: unless-stopped
 
 
   ################ SELENIUM ##################
@@ -148,6 +170,7 @@ services:
 
 
 volumes:
+  vllm-data:
   ollama-data:
   ollama-webui-data:
   mongo-cache:   

@@ -1,0 +1,13 @@
+langchain 
+langchain-community 
+fastapi 
+pydantic 
+uvicorn 
+streamlit 
+python-dotenv 
+duckduckgo-search 
+langchainhub 
+langchain-mongodb 
+langchain-experimental 
+markdownify 
+vllm 

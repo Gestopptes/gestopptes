@@ -6,10 +6,6 @@ name = "pypi"
 [packages]
 langchain = "*"
 langchain-community = "*"
-neo4j = "*"
-pymongo = "*"
-langchain-openai = "*"
-langchain-ollama = "*"
 fastapi = "*"
 pydantic = "*"
 uvicorn = "*"
@@ -20,8 +16,9 @@ langchainhub = "*"
 langchain-mongodb = "*"
 langchain-experimental = "*"
 markdownify = "*"
+vllm = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.12"
+python_version = "3.11"
