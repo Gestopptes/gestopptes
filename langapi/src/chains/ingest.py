@@ -6,8 +6,8 @@ from langchain_openai import ChatOpenAI
 def build_ingest_chain(graph: Neo4jGraph, llm: ChatOpenAI) -> None:
     def chain(
         urls: List[str],
-        chunk_size: int = 512,
-        chunk_overlap: int = 32,
+        chunk_size: int = 4096,
+        chunk_overlap: int = 128,
         headers_to_split_on: List[Tuple[str, str]] = [
             ("#", "Header 1"),
             ("##", "Header 2"),
@@ -31,12 +31,32 @@ def build_ingest_chain(graph: Neo4jGraph, llm: ChatOpenAI) -> None:
         md = MarkdownifyTransformer()
         converted_docs = md.transform_documents(docs)
 
+        llm_converted_docs = []
+
+        from langchain_core.prompts import ChatPromptTemplate
+
+        prompt = ChatPromptTemplate([
+            ("system", "You are a data sanitation engine. You have to proccess the input text into a sanitized version of it. Remove noise. Keep as much of the main content as possible. Remove long strips of text representing structured data. Be specific with dates and locations. Your reply should also be a valid markdown file with the same headers as the original markdown. Don't reduce the size of the original fille to less than 1/3 of its length. Always use the full name of things, always use the most accurate time description, mark important information as bold."),
+            ("human", "{input}"),
+        ])
+
+        # TODO: Gabi
+        clean_chain = prompt | llm
+
+        for cdoc in converted_docs:
+            llm_converted_docs.append(
+                Document(
+                    page_content=clean_chain.invoke({"input": cdoc.page_content}).content, 
+                    metadata=cdoc.metadata
+                )
+            )
+
         from langchain_text_splitters import MarkdownHeaderTextSplitter
 
         markdown_splitter = MarkdownHeaderTextSplitter(headers_to_split_on)
 
         split_docs = []
-        for doc in converted_docs:
+        for doc in llm_converted_docs:
             for split in markdown_splitter.split_text(doc.page_content):
                 split_docs.append(Document(page_content=split.page_content, metadata={**doc.metadata, **split.metadata}))
 
@@ -52,6 +72,8 @@ def build_ingest_chain(graph: Neo4jGraph, llm: ChatOpenAI) -> None:
             llm=llm,
             allowed_nodes=allowed_nodes,
             allowed_relationships=allowed_relationships,
+            node_properties=True,
+            relationship_properties=True,
         )
         graph_documents = llm_graph_transformer.convert_to_graph_documents(splits)
         # Store information into a graph
@@ -78,12 +100,8 @@ if __name__ == "__main__":
 
     chain = build_ingest_chain(graph=graph, llm=llm)
 
-    allowed_nodes = ["Person", "Organization", "Location", "Time", "Event"]
-    allowed_relationships = ["WORKS_AT", "ATTRIBUTE_OF", "IS_PART_OF", "INTERACTED_WITH"]
     print(
         chain(
             urls=["https://en.wikipedia.org/wiki/Attempted_assassination_of_Donald_Trump"],
-            allowed_nodes=allowed_nodes,
-            allowed_relationships=allowed_relationships,
         )
     )
