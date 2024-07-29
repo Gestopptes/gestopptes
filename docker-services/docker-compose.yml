@@ -19,7 +19,7 @@ services:
               count: all
               capabilities: [gpu]
     # restart: 
-    command: --model meta-llama/Meta-Llama-3.1-8B
+    command: --model meta-llama/Meta-Llama-3.1-8B --dtype half
     environment:
       - HUGGING_FACE_HUB_TOKEN
 
