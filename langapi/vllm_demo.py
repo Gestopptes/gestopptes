@@ -1,7 +1,7 @@
 from langchain_community.llms import VLLM
 
 llm = VLLM(
-    model="mosaicml/mpt-7b",
+    model="mistralai/Mistral-7B-v0.3",
     trust_remote_code=True,  # mandatory for hf models
     max_new_tokens=128,
     top_k=10,
