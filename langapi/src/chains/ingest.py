@@ -2,7 +2,8 @@ from typing import List, Tuple, Optional
 import json
 
 from langchain_community.graphs import Neo4jGraph
-from langchain_openai import ChatOpenAI
+from langchain_community.vectorstores import Neo4jVector
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 def fromat_metadata(document):
     return f"""{document.page_content}
@@ -10,18 +11,18 @@ def fromat_metadata(document):
     {json.dumps(document.metadata, indent=2)}
     """
 
-def build_ingest_chain(graph: Neo4jGraph, llm: ChatOpenAI) -> None:
+def build_ingest_chain(graph: Neo4jGraph, vector_store: Neo4jVector, llm: ChatOpenAI) -> None:
     def chain(
         urls: List[str],
-        chunk_size: int = 4096,
-        chunk_overlap: int = 128,
+        chunk_size: int = 512,
+        chunk_overlap: int = 32,
         headers_to_split_on: List[Tuple[str, str]] = [
-            ("#", "Header 1"),
-            ("##", "Header 2"),
-            ("###", "Header 3"),
-            ("####", "Header 4"),
-            ("#####", "Header 5"),
-            ("######", "Header 6"),
+            ("#", "header 1"),
+            ("##", "header 2"),
+            ("###", "header 3"),
+            ("####", "header 4"),
+            ("#####", "header 5"),
+            ("######", "header 6"),
         ],
         allowed_nodes: Optional[List[str]] = None,
         allowed_relationships: Optional[List[str]] = None,
@@ -43,7 +44,7 @@ def build_ingest_chain(graph: Neo4jGraph, llm: ChatOpenAI) -> None:
         from langchain_core.prompts import ChatPromptTemplate
 
         prompt = ChatPromptTemplate([
-            ("system", "You are a data sanitation engine. You have to proccess the input text into a sanitized version of it. Remove noise. Keep as much of the main content as possible. Remove long strips of text representing structured data. Be specific with dates and locations. Your reply should also be a valid markdown file with the same headers as the original markdown. Don't reduce the size of the original fille to less than 1/3 of its length. Always use the full name of things, always use the most accurate time description, mark important information as bold."),
+            ("system", "You are a data sanitation engine. You have to proccess the input text into a sanitized version of it. Remove noise. Keep as much of the main content as possible. Remove long strips of text representing structured data. Be specific with dates and locations. Your reply should also be a valid markdown file with the same headers as the original markdown. Don't reduce the size of the original fille to less than 1/3 of its length. Always use the full name of things, as example: `Alex` becomes `Alexandru Petre`! Always use the most accurate time description, as example: `1:45` becomes `Monday, June 15, 2009 1:45 PM (en-US)`! When generationg the full names and times use the context for appropriate values. Mark important information as bold. Don't use ```markdown``` sintax, output the markdown text as is!"),
             ("human", "{input}"),
         ])
 
@@ -75,23 +76,24 @@ def build_ingest_chain(graph: Neo4jGraph, llm: ChatOpenAI) -> None:
         
         splits = text_splitter.split_documents(split_docs)
 
-        final_splits = []
-        for split in splits:
-            final_splits.append(
-                Document(
-                    page_content=fromat_metadata(split)
-                )
-            )
-
         # Extract graph data using OpenAI functions
         llm_graph_transformer = LLMGraphTransformer(
             llm=llm,
             allowed_nodes=allowed_nodes,
             allowed_relationships=allowed_relationships,
-            node_properties=True,
-            relationship_properties=True,
+            node_properties=False,
+            relationship_properties=False,
         )
-        graph_documents = llm_graph_transformer.convert_to_graph_documents(final_splits)
+        graph_documents = llm_graph_transformer.convert_to_graph_documents(splits)
+
+        from hashlib import md5
+        vector_store.add_texts(texts=[g.source.page_content for g in graph_documents], metadatas=[g.source.metadata for g in graph_documents], ids=[md5(g.source.page_content.encode("utf-8")).hexdigest() for g in graph_documents])
+
+        from langchain_community.graphs.graph_document import Relationship, Node
+        for gd in graph_documents:
+            for n in gd.nodes:
+                gd.relationships.append(Relationship(source=n, target=Node(id=md5(gd.source.page_content.encode("utf-8")).hexdigest(), type=vector_store.node_label), type='MENTIONED_IN_SOURCE'))
+
         # Store information into a graph
         graph.add_graph_documents(graph_documents=graph_documents)
         return "Graph construction finished"
@@ -112,6 +114,7 @@ if __name__ == "__main__":
     ))
 
     graph = Neo4jGraph()
+    vector_store = Neo4jVector(embedding=OpenAIEmbeddings(model='text-embedding-3-small'))
     llm = ChatOpenAI(model=os.environ.get("OPENAI_MODEL_NAME"), temperature=0)
     
     # Initialize Langfuse handler
@@ -124,7 +127,7 @@ if __name__ == "__main__":
 
     llm = llm.with_config({"callbacks": [langfuse_handler]})
 
-    chain = build_ingest_chain(graph=graph, llm=llm)
+    chain = build_ingest_chain(graph=graph, vector_store=vector_store, llm=llm)
 
     print(
         chain(
