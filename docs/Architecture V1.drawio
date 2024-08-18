@@ -1,0 +1,84 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" version="24.7.7">
+  <diagram name="Page-1" id="srAp1sgUBfSRHAhQ9bbb">
+    <mxGraphModel dx="2707" dy="1128" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-55" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="1140" y="60" width="340" height="680" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-54" value="Data Science" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-55">
+          <mxGeometry x="-70" width="410" height="680" as="geometry">
+            <mxRectangle width="110" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-4" value="Graph" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-54">
+          <mxGeometry x="40" y="480" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-21" value="&lt;div&gt;FastAPI&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;Chat&lt;div&gt;Agents&lt;span style=&quot;background-color: initial;&quot;&gt;I&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Ingest&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-54">
+          <mxGeometry x="40" y="70" width="260" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-89" value="SQL" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-54">
+          <mxGeometry x="110" y="570" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-90" value="No SQL" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-54">
+          <mxGeometry x="250" y="570" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-91" value="Vector" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-54">
+          <mxGeometry x="180" y="480" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-56" value="Backend" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="60" width="520" height="670" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-49" value="Postgress" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-56">
+          <mxGeometry x="300" y="480" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-57" value="FastAPI&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;User Management&lt;/div&gt;&lt;div&gt;Chat History (Share, Search, Continue)&lt;/div&gt;&lt;div&gt;Data Management&lt;/div&gt;&lt;div&gt;Agent Management&lt;/div&gt;&lt;div&gt;Schedule Management\&lt;/div&gt;&lt;div&gt;Tool Management&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-56">
+          <mxGeometry x="135" y="80" width="250" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-63" value="Temporalio" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-56">
+          <mxGeometry x="100" y="430" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-65" value="Graphana" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-56">
+          <mxGeometry x="120" y="530" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-67" value="Tools" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="770" width="990" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-86" value="&lt;span style=&quot;background-color: initial;&quot;&gt;Search&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Internet&lt;/span&gt;&lt;br&gt;&lt;ul&gt;&lt;li&gt;Semantic Database&lt;/li&gt;&lt;li&gt;Structured Database&lt;/li&gt;&lt;/ul&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=30;notch=30;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-67">
+          <mxGeometry x="110" y="55" width="200" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-85" value="&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: initial; text-wrap: wrap;&quot;&gt;Generate Artefact&lt;/span&gt;&lt;br&gt;&lt;ul&gt;&lt;li style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;text-wrap: wrap; background-color: initial;&quot;&gt;Code&lt;/span&gt;&lt;br&gt;&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;text-wrap: wrap;&quot;&gt;Query&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;text-wrap: wrap;&quot;&gt;Screen Grab&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;text-wrap: wrap;&quot;&gt;OCR&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;text-wrap: wrap;&quot;&gt;NER&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;text-wrap: wrap;&quot;&gt;Image&lt;/span&gt;&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;text-wrap: wrap;&quot;&gt;Tables&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=30;notch=30;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-67">
+          <mxGeometry x="380" y="55" width="270" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-87" value="&lt;span style=&quot;text-wrap: wrap; background-color: initial;&quot;&gt;Execute Artefact&lt;/span&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;text-wrap: wrap;&quot;&gt;Code&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;text-wrap: wrap;&quot;&gt;Query&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0;dx=30;notch=30;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-67">
+          <mxGeometry x="710" y="55" width="200" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-95" value="Frontend" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-120" y="80" width="560" height="1090" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-96" value="&lt;span style=&quot;font-size: 11px; text-wrap: nowrap; background-color: rgb(255, 255, 255);&quot;&gt;Agents&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 11px; text-wrap: nowrap; background-color: rgb(255, 255, 255);&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 11px; text-wrap: nowrap; background-color: rgb(255, 255, 255);&quot;&gt;Data Flow&lt;/span&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-95">
+          <mxGeometry x="69" y="80" width="190" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-97" value="Chat History Management" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-95">
+          <mxGeometry x="79" y="600" width="190" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-98" value="&lt;br&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;Chat&lt;/span&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-95">
+          <mxGeometry x="79" y="340" width="190" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-99" value="User Management" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-95">
+          <mxGeometry x="340" y="420" width="190" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-100" value="&lt;span style=&quot;font-size: 11px; text-wrap: nowrap; background-color: rgb(255, 255, 255);&quot;&gt;Add/Delete Data Source&lt;/span&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-95">
+          <mxGeometry x="329" y="150" width="190" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-101" value="API key Management" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-95">
+          <mxGeometry x="329" y="670" width="190" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="y1hrJyy8gYygd9RyYJVy-102" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="y1hrJyy8gYygd9RyYJVy-95">
+          <mxGeometry x="99" y="840" width="190" height="190" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
